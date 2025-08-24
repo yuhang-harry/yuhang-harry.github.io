@@ -10,7 +10,7 @@ I am a first-year master's student at Tongji University supervised by [Prof.Junq
 
 - **Reinforcement Learning:** model-based RL, offline RL
 - **Large Language Model(LLM):** reasoning, RLHF
-- **Emboddied AI:** Visual Prompt, Dagger
+- **Emboddied AI:** Visual Prompt, DAgger
 
 ## Experience
 
