@@ -32,7 +32,7 @@ main:
     image: ./assets/img/SMG.png
 
   - title: "How to Fine-tune the Model: Unified Model Shift and Model Bias Policy Optimization"
-    authors: <strong>Hang Yu</strong>, Yuyin Zhou, Cihang Xie, Yuyin Zhou†
+    authors: Hai Zhang, <strong>Hang Yu</strong>, Junqiao Zhao†, Di Zhang, Chang Huang, Hongtu Zhou, Xiao Zhang, Chen Ye
     conference_short: NeurIPS
     conference: Annual Conference on Neural Information Processing Systems (NeurIPS) 2023
     pdf: https://openreview.net/pdf?id=d7a5TpePV7
