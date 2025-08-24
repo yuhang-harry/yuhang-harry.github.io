@@ -19,7 +19,7 @@ I am a first-year master's student at Tongji University supervised by [Prof.Junq
     - Involved in algorithm design and optimization for Vision-Language-Action (VLA) models, with deployment on real-world robotic systems.
     - Currently working on Visual Prompt and Dagger research.
 - Graz University of Technology Exchange Researcher (Austria) <span style="float: right;">「March. 2025 -- July. 2024」</span>
-    - funded by Erasmus+, work on RL application
+    - funded by Erasmus+, work with [Prof. Eduardo Veas](https://eduveas.github.io/) on RL application
 - TAL [MathGPT](https://www.mathgpt.com/) Group research intern <span style="float: right;">「March. 2023 -- July. 2023」</span>
     - Contributed to the RLHF pipeline design, including reward modeling, and PPO/DPO alignment for TAL’s MathGPT, a math-focused large model used in education scenarios.
 - Master's Degree <span style="float: right;">「Sep. 2024 -- Present」</span>
