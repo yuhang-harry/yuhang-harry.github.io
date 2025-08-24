@@ -14,7 +14,7 @@ I am a first-year master's student at Tongji University supervised by [Prof.Junq
 
 ## Experience
 
-- Spirit AI Research Intern <span style="float: right;">「Aug. 2025 -- Present」</span>
+- [Spirit AI](https://www.spirit-ai.com/) Research Intern <span style="float: right;">「Aug. 2025 -- Present」</span>
     - Supervised by [Prof. Yang Gao](https://people.iiis.tsinghua.edu.cn/~gaoyang/yang-gao.weebly.com/index.html) and [Junyuan Xie](https://scholar.google.com/citations?user=qJsC_XsAAAAJ&hl=zh-CN)
     - Involved in algorithm design and optimization for Vision-Language-Action (VLA) models, with deployment on real-world robotic systems.
     - Currently working on Visual Prompt and Dagger research.
