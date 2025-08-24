@@ -26,9 +26,10 @@ I am a first-year master's student at Tongji University supervised by [Prof.Junq
     - Dept. of Computer Science and Technology, Tongji University 
 - Bachelor's Degree <span style="float: right;">「Sep. 2020 -- Jul. 2024 」</span>
     - Dept. of Computer Science and Technology, Tongji University
-    - Overall Ranking 1/113
+    - Overall Ranking College No.1/113
     - Outstanding Graduate of Shanghai 2024
     - First Prize Tongji University Excellent Student Scholarship, 2020 & 2021 & 2022 & 2023
+    - [First Prize](https://see.tongji.edu.cn/info/1178/13146.htm) in the National Finals of the 17th Undergraduate Intelligent Vehicle Competition
 
 {% include_relative _includes/publications.md %}
 
