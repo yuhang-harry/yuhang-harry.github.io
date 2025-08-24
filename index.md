@@ -4,7 +4,7 @@ layout: homepage
 
 ## About Me
 
-I am a second-year master's student at Tongji University.
+I am a first-year master's student at Tongji University supervised by [Prof.Junqiao Zhao](http://cs1.tongji.edu.cn/~junqiao/). I am interested in reinforcement learning, LLM reasoning and embodied intelligence, with a focus on improving agent generalization in dynamic environments. Ultimately, I aim to build generalizable action models to enable intelligent and versatile robot behaviors.
 
 ## Research Interests
 
@@ -20,7 +20,7 @@ I am a second-year master's student at Tongji University.
     - Currently working on Visual Prompt and Dagger research.
 - Graz University of Technology Exchange Researcher (Austria) <span style="float: right;">「March. 2025 -- July. 2024」</span>
     - funded by Erasmus+, work on RL application
-- TAL MathGPT Group research intern <span style="float: right;">「March. 2023 -- July. 2023」</span>
+- TAL [MathGPT](https://www.mathgpt.com/) Group research intern <span style="float: right;">「March. 2023 -- July. 2023」</span>
     - Contributed to the RLHF pipeline design, including reward modeling, and PPO/DPO alignment for TAL’s MathGPT, a math-focused large model used in education scenarios.
 - Master's Degree <span style="float: right;">「Sep. 2024 -- Present」</span>
     - Dept. of Computer Science and Technology, Tongji University 
