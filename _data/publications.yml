@@ -1,22 +1,42 @@
 main:
 
-  - title: Continual Learning for Abdominal Multi-Organ and Tumor Segmentation
-    authors: Yixiao Zhang, Xinyi Li, Huimiao Chen, Alan Yuille, <strong>Yaoyao Liu*</strong>, Zongwei Zhou* (*Corresponding authors)
-    conference_short: MICCAI
-    conference: International Conference on Medical Image Computing and Computer-Assisted Intervention <strong>(MICCAI)</strong>, 2023.
-    pdf: https://arxiv.org/pdf/2306.00988.pdf
-    code: https://github.com/MrGiovanni/ContinualLearning
-    bibtex: https://bib.yliu.me/MICCAI23.txt
-    image: ./assets/img/teaser_example_2.png
-    notes: Early Accept
+  - title: "ASTRO: Adaptive Stitching via Dynamics-Guided Trajectory Rollouts"
+    authors: <strong>Hang Yu</strong>, Di Zhang, Qiwei Du, Yanping Zhao, Hai Zhang, Guang Chen, Junqiao Zhao†, Eduardo E. Veas†
+    conference_short: 
+    conference: 
+    pdf: 
+    code: 
+    bibtex: 
+    image: ./assets/img/astro.png
+    notes: under preview
 
-  - title: "Mnemonics Training: Multi-Class Incremental Learning without Forgetting"
-    authors: <strong>Yaoyao Liu</strong>, Yuting Su, An-An Liu, Bernt Schiele, Qianru Sun
-    conference_short: CVPR
-    conference: IEEE/CVF Conference on Computer Vision and Pattern Recognition <strong>(CVPR)</strong>, 2020.
-    pdf: https://arxiv.org/pdf/2002.10211.pdf
-    code: https://github.com/yaoyao-liu/class-incremental-learning/tree/main/mnemonics-training
-    page: https://class-il.mpi-inf.mpg.de/mnemonics/
-    bibtex: https://class-il.mpi-inf.mpg.de/mnemonics/
-    notes: Oral Presentation
-    image: ./assets/img/teaser_example.png
+  - title: "Knowledge or Reasoning? A Close Look at How LLMs Think Across Domains"
+    authors: Juncheng Wu*, Sheng Liu*, Haoqin Tu*, <strong>Hang Yu*</strong>, Xiaoke Huang, Cihang Xie, Yuyin Zhou†
+    conference_short: 
+    conference: 
+    pdf: https://arxiv.org/pdf/2506.02126
+    code: https://github.com/UCSC-VLAA/ReasoningEval
+    page: https://ucsc-vlaa.github.io/ReasoningEval/
+    bibtex: 
+    notes: under preview
+    image: ./assets/img/KR.png
+
+  - title: "Focus On What Matters: Separated Models For Visual-Based RL Generalization"
+    authors: Di Zhang, Bowen Lv, Hai Zhang, Feifan Yang, Junqiao Zhao†, <strong>Hang Yu</strong>, Chang Huang, Hongtu Zhou, Chen Ye, Changjun Jiang
+    conference_short: NeurIPS
+    conference: Annual Conference on Neural Information Processing Systems (NeurIPS) 2024
+    pdf: https://openreview.net/pdf?id=wz2KvvEk44
+    code: https://anonymous.4open.science/r/SMG/
+    bibtex: 
+    notes: 
+    image: ./assets/img/SMG.png
+
+  - title: "How to Fine-tune the Model: Unified Model Shift and Model Bias Policy Optimization"
+    authors: <strong>Hang Yu</strong>, Yuyin Zhou, Cihang Xie, Yuyin Zhou†
+    conference_short: NeurIPS
+    conference: Annual Conference on Neural Information Processing Systems (NeurIPS) 2023
+    pdf: https://openreview.net/pdf?id=d7a5TpePV7
+    code: https://github.com/betray12138/Unified-Model-Shift-and-Model-Bias-Policy-Optimization
+    bibtex: 
+    notes: 
+    image: ./assets/img/usb-po.png
