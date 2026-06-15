@@ -38,7 +38,9 @@ font: "Serif" # or "Sans Serif"
 
 # Google Analytics ID
 # Please remove this if you don't use Google Analytics
-google_analytics: UA-111540567-4
+# Note: the old Universal Analytics (UA-) property is deprecated and no longer collects data.
+# Replace with a GA4 measurement ID (format: G-XXXXXXXXXX) to re-enable analytics.
+# google_analytics: G-XXXXXXXXXX
 
 # Use this project as a remote theme for GitHub Pages
 # See the guide here: https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/adding-a-theme-to-your-github-pages-site-using-jekyll
