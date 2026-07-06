@@ -1,7 +1,7 @@
 main:
 
   - title: "Point What You Mean: Visually Grounded Instruction Policy"
-    authors: <strong>Hang Yu*</strong>, Juntu Zhao*, Yufeng Liu, Kaiyu Li, Cheng Ma, Di Zhang, Yingdong Hu, Guang Chen, Junyuan Xie, Junliang Guo‡, Junqiao Zhao†, Yang Gao†
+    authors: <strong>Hang Yu</strong>, Juntu Zhao, Yufeng Liu, Kaiyu Li, Cheng Ma, Di Zhang, Yingdong Hu, Guang Chen, Junyuan Xie, Junliang Guo‡, Junqiao Zhao†, Yang Gao†
     conference_short: IROS
     conference: "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) 2026"
     pdf: https://arxiv.org/pdf/2512.18933
