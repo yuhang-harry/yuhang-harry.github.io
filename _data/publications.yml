@@ -2,13 +2,13 @@ main:
 
   - title: "Point What You Mean: Visually Grounded Instruction Policy"
     authors: <strong>Hang Yu*</strong>, Juntu Zhao*, Yufeng Liu, Kaiyu Li, Cheng Ma, Di Zhang, Yingdong Hu, Guang Chen, Junyuan Xie, Junliang Guo‡, Junqiao Zhao†, Yang Gao†
-    conference_short:
-    conference:
+    conference_short: IROS
+    conference: "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) 2026"
     pdf: https://arxiv.org/pdf/2512.18933
     code:
     page: https://yuhang-harry.github.io/Point-VLA/
     bibtex:
-    notes: under submission
+    notes:
     image: ./assets/img/point-vla.png
 
   - title: "Learning Native Continuation for Action Chunking Flow Policies"
@@ -24,13 +24,13 @@ main:
 
   - title: "ASTRO: Adaptive Stitching via Dynamics-Guided Trajectory Rollouts"
     authors: <strong>Hang Yu</strong>, Di Zhang, Qiwei Du, Yanping Zhao, Hai Zhang, Guang Chen, Junqiao Zhao†, Eduardo E. Veas†
-    conference_short: 
-    conference: 
-    pdf: 
-    code: 
-    bibtex: 
+    conference_short: RSS Workshop
+    conference: "Robotics: Science and Systems (RSS) 2026 Workshop"
+    pdf:
+    code:
+    bibtex:
     image: ./assets/img/astro.png
-    notes: under preview
+    notes:
 
   - title: "Knowledge or Reasoning? A Close Look at How LLMs Think Across Domains"
     authors: Juncheng Wu*, Sheng Liu*, Haoqin Tu*, <strong>Hang Yu*</strong>, Xiaoke Huang, Cihang Xie, Yuyin Zhou†
