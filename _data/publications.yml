@@ -1,6 +1,12 @@
 main:
 
   - title: "Point What You Mean: Visually Grounded Instruction Policy"
+    acronym: Point-VLA
+    role: First author
+    venue: IROS 2026
+    summary: "Language alone can leave manipulation targets ambiguous. Point-VLA combines a visual target cue with a language action, using a fixed reference image, multimodal co-training, and spatial augmentation."
+    result: "92.5% mean success across six reported tasks, versus 32.4% for text-only instructions and 40.0% for interleaved prompting (up to two retries within 30 seconds)."
+    contribution: "Independently developed the method and carried out the experiments."
     authors: <strong>Hang Yu</strong>, Juntu Zhao, Yufeng Liu, Kaiyu Li, Cheng Ma, Di Zhang, Yingdong Hu, Guang Chen, Junyuan Xie, Junliang Guo‡, Junqiao Zhao†, Yang Gao†
     conference_short: IROS
     conference: "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) 2026"
@@ -12,6 +18,12 @@ main:
     image: ./assets/img/point-vla.png
 
   - title: "Learning Native Continuation for Action Chunking Flow Policies"
+    acronym: Legato
+    role: Core author
+    venue: RSS 2026
+    summary: "Action chunks should continue smoothly without a training–inference mismatch. Legato couples scheduled initialization with a consistent velocity field to learn native continuation."
+    result: "In the reported pouring comparison, completion time decreased from 95.07 to 75.73 seconds while task score increased from 9.34 to 9.72."
+    contribution: "Theory and derivations, the training–inference-consistent velocity-field formulation, and experimental implementation."
     authors: Yufeng Liu, <strong>Hang Yu</strong>, Juntu Zhao, Bocheng Li, Di Zhang, Mingzhu Li, Wenxuan Wu, Yingdong Hu, Junyuan Xie, Junliang Guo‡, Dequan Wang†, Yang Gao†
     conference_short: RSS
     conference: "Robotics: Science and Systems (RSS) 2026"
@@ -23,16 +35,26 @@ main:
     image: ./assets/img/legato.png
 
   - title: "ASTRO: Adaptive Stitching via Dynamics-Guided Trajectory Rollouts"
+    acronym: ASTRO
+    role: First author
+    venue: RSS 2026 Workshop
+    summary: "Fragmented offline trajectories leave useful experience disconnected. ASTRO combines temporal target selection, a diffusion action planner with frozen dynamics, and deviation feedback for self-correction during training and rollout."
+    result: "In the reported state-based offline RL evaluation, IQL improved from 36.08 to 45.52 and FQL from 55.52 to 65.71."
+    contribution: "Independently developed the method and carried out the experiments."
     authors: <strong>Hang Yu</strong>, Di Zhang, Qiwei Du, Yanping Zhao, Hai Zhang, Guang Chen, Junqiao Zhao†, Eduardo E. Veas†
     conference_short: RSS Workshop
     conference: "Robotics: Science and Systems (RSS) 2026 Workshop"
-    pdf:
+    pdf: https://arxiv.org/pdf/2511.23442
     code:
     bibtex:
     image: ./assets/img/astro.png
     notes:
 
   - title: "Knowledge or Reasoning? A Close Look at How LLMs Think Across Domains"
+    acronym: ReasoningEval
+    role: Co-first author
+    venue: Preprint (2025)
+    summary: "What improves when an LLM reasons better? Knowledge Index and Information Gain disentangle knowledge from reasoning, revealing different effects of supervised fine-tuning and reinforcement learning in the evaluated models."
     authors: Juncheng Wu*, Sheng Liu*, Haoqin Tu*, <strong>Hang Yu*</strong>, Xiaoke Huang, Cihang Xie, Yuyin Zhou†
     conference_short: 
     conference: 
@@ -40,10 +62,14 @@ main:
     code: https://github.com/UCSC-VLAA/ReasoningEval
     page: https://ucsc-vlaa.github.io/ReasoningEval/
     bibtex: 
-    notes: under preview
+    notes:
     image: ./assets/img/KR.png
 
   - title: "Focus On What Matters: Separated Models For Visual-Based RL Generalization"
+    acronym: SMG
+    role: Co-author
+    venue: NeurIPS 2024
+    summary: "Visual RL can overfit to irrelevant backgrounds. SMG separates task-relevant foreground learning using reward and inverse-dynamics signals, improving generalization under visual distractions."
     authors: Di Zhang, Bowen Lv, Hai Zhang, Feifan Yang, Junqiao Zhao†, <strong>Hang Yu</strong>, Chang Huang, Hongtu Zhou, Chen Ye, Changjun Jiang
     conference_short: NeurIPS
     conference: Annual Conference on Neural Information Processing Systems (NeurIPS) 2024
@@ -54,6 +80,10 @@ main:
     image: ./assets/img/SMG.png
 
   - title: "How to Fine-tune the Model: Unified Model Shift and Model Bias Policy Optimization"
+    acronym: USB-PO
+    role: Core author
+    venue: NeurIPS 2023
+    summary: "Better predictive models do not always produce better policies. USB-PO jointly accounts for model shift and model bias with an adaptive model-update objective, improving sample efficiency on six MuJoCo tasks."
     authors: Hai Zhang, <strong>Hang Yu</strong>, Junqiao Zhao†, Di Zhang, Chang Huang, Hongtu Zhou, Xiao Zhang, Chen Ye
     conference_short: NeurIPS
     conference: Annual Conference on Neural Information Processing Systems (NeurIPS) 2023
