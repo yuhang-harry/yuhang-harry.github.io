@@ -12,14 +12,12 @@ At **Spirit-AI**, I worked with **Junliang Guo, Junyuan Xie, and Yang Gao** on g
 
 I will join the **School of Computing and Data Science, The University of Hong Kong, as a PhD student in Fall 2027**, advised by [Prof. Hongyang Li](https://lihongyang.info/).
 
-<p class="news"><strong>Sep. 2026</strong> — Received my PhD offer from HKU. Looking forward to the next chapter!</p>
-
 ## Research Direction
 
 <div class="research-path" aria-label="Research progression">
   <div><span>01 · Spirit-AI</span><strong>Gripper policy pretraining</strong><p>Generalist manipulation from diverse robot experience.</p></div>
   <div><span>02 · Liber-AI</span><strong>Dexterous learning from human data</strong><p>Robot-free glove collection for rich hand–object interactions.</p></div>
-  <div><span>03 · HKU</span><strong>Whole-Body Intelligence</strong><p>Coordinating hands, arms, torso, and locomotion.</p></div>
+  <div><span>03 · Future</span><strong>Whole-Body Intelligence</strong><p>Coordinating hands, arms, torso, and locomotion.</p></div>
 </div>
 
 For my PhD, I hope to address **mobility in confined spaces, tasks requiring whole-body force, combined locomotion and manipulation in complex environments, and tasks requiring body contact**.
