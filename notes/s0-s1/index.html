@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="How can a robot hand carry out a human demonstration when the object sits differently in its grasp? A research note on teleoperation intent, contact, and learning to execute.">
+  <title>What should a robot hand learn from a demonstration? · Hang Yu</title>
+  <style>
+    * { box-sizing: border-box }
+    body { margin: 0; color: #202e2e; background: #fffdf8; font: 18px/1.68 Georgia, "Times New Roman", serif }
+    main { max-width: 780px; margin: auto; padding: 26px 28px 52px }
+    a { color: #165c57; text-underline-offset: 4px }
+    nav, footer, .meta, .eyebrow, .figure-label, figcaption, details { font-family: system-ui, sans-serif }
+    nav { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #cfd6cf; font-size: 14px }
+    nav span, .eyebrow, .figure-label { font-size: 12px; font-weight: 650; letter-spacing: .08em }
+    .eyebrow { color: #25665d; margin: 36px 0 8px }
+    h1 { margin: 0; max-width: 690px; font-size: clamp(34px, 6vw, 52px); line-height: 1.08; letter-spacing: -.035em; text-wrap: balance }
+    .meta { color: #53635c; font-size: 13px; margin: 12px 0 24px }
+    p { margin: 13px 0 }
+    .opening { font-size: 1.14em; line-height: 1.55 }
+    h2 { font-size: clamp(25px, 4vw, 31px); line-height: 1.2; margin: 34px 0 14px; letter-spacing: -.025em }
+    figure { margin: 22px 0; border: 1px solid #d3dace; border-radius: 8px; padding: 18px 20px; background: #f3f4eb }
+    .figure-label { color: #42594e; margin: 0 0 12px }
+    figcaption { color: #44544b; font-size: 14px; line-height: 1.5; margin-top: 10px }
+    svg, video { display: block; width: 100%; height: auto }
+    video { background: #12181d; border-radius: 4px }
+    #experiments { scroll-margin-top: 1rem }
+    .rollout { padding: 0; background: #fff; overflow: hidden }
+    .rollout .figure-label, .rollout figcaption { padding: 10px 16px; margin: 0 }
+    .rollout video { border-radius: 0 }
+    .rollout figcaption { background: #f3f4eb }
+    .reward { background: #f3f6f2 }
+    .reward-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 14px }
+    .reward-group { background: #fffdf8; border: 1px solid #adbeaf; padding: 12px 14px; border-radius: 5px }
+    .reward-group h3 { margin: 0 0 5px; color: #275a54 }
+    .reward-group p, .reward-result { font: 15px/1.5 system-ui, sans-serif; margin: 0 }
+    .reward-result { padding-top: 12px }
+    @media (max-width: 600px) { .reward-grid { grid-template-columns: 1fr } }
+    .method { width: min(1200px, calc(100vw - 44px)); position: relative; left: 50%; transform: translateX(-50%); padding: 0; background: #fff; overflow: hidden; scroll-margin-top: 12px }
+    .method picture, .method img { display: block; width: 100%; height: auto }
+    .method figcaption { margin: 0; padding: 12px 22px; background: #f3f6f2; border-top: 1px solid #d3dace }
+    .method figcaption a { white-space: nowrap }
+    @media (max-width: 700px) { .method { width: calc(100vw - 18px) } .method figcaption { padding: 10px 12px } }
+    .sources { margin: 17px 0; width: 100%; border-collapse: collapse; font: 15px/1.5 system-ui, sans-serif }
+    .sources th, .sources td { border-bottom: 1px solid #d3dace; text-align: left; vertical-align: top; padding: 9px 10px 9px 0 }
+    .sources th { color: #285c52 }
+    .sources th[scope="row"] { width: 26% }
+    h3 { margin: 24px 0 8px; font-size: 1.15em }
+    details { border-block: 1px solid #d3dace; padding: 10px 0; font-size: 15px; margin-top: 24px }
+    summary { cursor: pointer; color: #205c53; font-weight: 600 }
+    footer { margin-top: 28px; font-size: 14px }
+    @media (max-width: 520px) {
+      main { padding: 16px 17px 34px }
+      body { font-size: 17px }
+      figure { padding: 12px }
+    }
+    img { max-width: 100%; height: auto }
+    .scope { border-left: 3px solid #157366; padding: 8px 16px; background: #eff5f1; font: 15px/1.55 system-ui,sans-serif }
+    .stream-list { padding-left: 22px }
+    .stream-list li { margin: 9px 0 }
+    .table-wrap { overflow-x: auto; margin: 18px 0 }
+    .table-wrap table { margin: 0 }
+    .metric { font-variant-numeric: tabular-nums }
+    .figure-label { line-height: 1.5 }
+    :focus-visible { outline: 2px solid #157366; outline-offset: 4px }
+    @media(max-width:520px) { .sources { font-size: 13px } .sources th,.sources td { padding-right: 8px } }
+  </style>
+</head>
+<body>
+<main>
+  <nav><a href="../../">← Hang Yu</a><span>RESEARCH NOTES</span></nav>
+  <header>
+    <p class="eyebrow">DEXTEROUS MANIPULATION</p>
+    <h1>What should a robot hand learn from a demonstration?</h1>
+    <p class="meta">Hang Yu · Updated November 13, 2026 · <a href="#intent">The interface</a> · <a href="#experiments">Motion studies</a> · <a href="#current">Current results</a></p>
+    <p class="opening">A demonstration shows a flower held straight and lowered into a narrow vase. A robot can follow the recorded wrist path and still arrive with the stem tilted. Repeating the finger motion may carry that error all the way to the rim. The hand needs to adjust the grasp while continuing the same operation.</p>
+  </header>
+  <p>This is the execution capability I want to learn from demonstrations. The motion should remain recognizably close to the reference, but contact may require one finger to ease, another to take the load, or the stem to pivot before insertion continues. The outcome matters too: the flower must clear the rim and remain in the vase after release. Neither a plausible-looking hand trajectory nor a moment of successful contact establishes that.</p>
+  <p>The proposed division is <strong>S1 for future intent, S0 for feedback execution</strong>. S1 uses the scene, task and recent history to say what motion, request and contact behavior should come next. S0 uses those intentions together with current feedback to choose motor actions. It can make a local correction before the next high-level prediction arrives, then rejoin the intended motion. The research question is whether this division can preserve the demonstrated operation while making its execution physically effective.</p>
+  <p>The development order follows that question: first teach S0 to complete clean operations from recorded or constructed intent; then learn S1 and the visual execution model; finally test the complete system during motion, with and without disturbances. A push is one way to expose the value of feedback. Completing the intended manipulation is the objective throughout.</p>
+
+  <h2 id="intent">An intention has motion, a request and a contact goal</h2>
+  <p>A demonstrated hand pose does not fully specify how it was produced. A finger pressing an object can remain almost still while its requested target continues through the surface. That difference carries information about the controller’s request. Yet a larger position request alone does not specify whether the desired behavior is to hold the present load, reduce it, or transfer support to another finger. This motivates three distinct future streams:</p>
+  <ul class="stream-list">
+    <li><strong>Hand state (S):</strong> how the hand should actually move—its shape, keypoint motion and their changes over the coming interval.</li>
+    <li><strong>Requested command (C):</strong> what the upstream operator or model asks the controller to do, including a request beyond the pose reached under load.</li>
+    <li><strong>Desired tactile (T):</strong> how contact should evolve—maintain, increase, ease, redistribute or release finger loads.</li>
+  </ul>
+  <p>S1 predicts all three over a common future clock. Each stream retains its own anchor, validity and confidence; a delta is interpreted relative to its declared anchor. A valid zero tactile change means “maintain,” whereas a missing tactile target supplies no such instruction. The future tactile target and the contact measured after execution are different quantities.</p>
+  <p>The wrist or end-effector trajectory is another coordinated part of the intention. The hand interface should not turn a human hand representation directly into robot motor commands: it must preserve the relevant motion and requests through a validated robot mapping. The earlier study below holds the wrist fixed to isolate finger behavior. The current implementation also learns both wrists’ actions.</p>
+  <p>S0 receives the available future streams, current proprioception, controller feedback, current touch where available, and recent causal history. It learns when to prioritize motion, preserve support or change compliance and force. Its correction remains an execution decision: it does not rewrite the original command or relabel the resulting force as the desired tactile input.</p>
+  <p class="scope">Figure 02 retains the historical fixed-wrist configuration, including its 30 future points and stiffness/damping outputs. It explains the three stream meanings. The current 10-point, 52-action implementation is specified <a href="#current">below</a>; a complete learned S1→S0 loop is not established by this figure.</p>
+  <figure class="method" id="hand-interface" aria-label="How S0 reads S1’s hand intent">
+    <picture>
+      <source media="(max-width: 700px)" srcset="media/hand-interface-portrait.svg" width="424" height="1476">
+      <img src="media/hand-interface.svg" width="1220" height="993" alt="Three MuJoCo views of a fixed-wrist hand show a cube face turning 12.5 degrees. At the middle time point the solid hand reaches 68.1 degrees at one middle-finger joint. The violet virtual hand shows its 73.6-degree requested pose. A finger-by-time map illustrates desired load changes. Alongside it, arrows at the thumb, middle, and little finger contacts show the forces those fingers exerted on the cube.">
+    </picture>
+    <figcaption><strong>One grasp, seen three ways.</strong> The cube makes the change in hand state visible. Its marked face turns 12.5° relative to the palm. The violet outline places the same hand at the upstream command, so its gap from the solid fingers shows what the motors were asked to do beyond the pose they reached. The heatmap illustrates a desired transfer of load. The arrows start at recorded contact points and point in the direction each finger pushed the cube. <a href="media/hand-interface.svg">Full-size SVG</a> · <a href="media/hand-interface.png">PNG</a></figcaption>
+  </figure>
+
+  <h2 id="training">Learn to follow the operation and finish it</h2>
+  <p>S0 can be viewed as a reference-conditioned teleoperation policy learned with RL. The reference specifies the intended operation; feedback tells the policy how that operation is unfolding in the actual scene. This leaves a meaningful decision at the hand: continue the requested motion, temporarily adjust one contact, or redistribute support before continuing.</p>
+  <p><strong>The main policy should learn tracking and the object task together from the start.</strong> Its objective combines a tracking score across the valid S, C and T streams with a separate score for actual object progress and completion, plus control costs and physical failure penalties. State tracking compares the resulting hand motion with the desired state; command tracking compares the issued request with the controller request actually applied; tactile tracking compares measured loads with the pre-issued tactile target. Missing or duplicated signals must not silently contribute extra reward.</p>
+  <p>The object term answers a different question: did the cube turn and settle on the requested face, did the fingers lift the intended objects, or did the flower enter and remain after release? Tracking-only and task-only policies are useful comparisons. The proposed executor needs both. Local deviations still incur tracking cost; they become worthwhile only if they help the physical operation. A policy that abandons the reference for the whole episode has not demonstrated this tradeoff.</p>
+  <p><strong>A reasonable reference need not replay perfectly before RL can use it.</strong> Different geometry, contact and actuator behavior can make a recorded motion fail under direct execution. The trajectory can still guide exploration while S0 learns to maintain contact, adjust a finger and return to the motion. This is the reason to learn an executor. Obvious errors in timing, coordinate frames, hand mapping or object reconstruction still need correction; they are not useful variations for the policy to repair.</p>
+  <p>Real-to-sim therefore starts with the demonstrated scene and operation: source video, robot motion, object scale, support surfaces and the contacts needed to advance the task. An unrelated nominal object can change the grasp itself. Measured, reconstructed and assumed quantities must remain distinguishable. A failed replay can inform RL or dynamics learning, but it cannot be relabeled as a successful demonstration for imitation or S1 supervision.</p>
+
+  <h3>Teach with object information, execute from observations</h3>
+  <p>During simulation training, an S0 teacher can observe privileged current object state: pose, motion, contact and the geometry relevant to manipulation. Pose alone may not distinguish the rim that catches a stem or the surface that can support a finger. Shape may therefore need a compact surface or mesh-derived representation. The appropriate representation remains a design question; privileged access does not mean access to future disturbances or the answer trajectory.</p>
+  <p>A visual student would replace that privileged scene information with <strong>head and left/right wrist images</strong>, simple robot state and recent history, while receiving the same upstream intention. Versions with and without current tactile feedback would test how much contact information vision can recover. Both still distinguish current touch from desired future touch. Qualified teacher behavior would supply imitation targets, followed by correction on the student’s own visited states and further task training as needed.</p>
+  <p>This teacher–student design is broader than the current run: the frozen unified PPO actor reported below uses robot state and the intent packet, with privileged scene information in its critic. Learned gain control, a privileged actor and successful visual-student execution must each be demonstrated separately.</p>
+
+  <h2 id="data">Use partial labels without changing the interface</h2>
+  <p>The three-stream design also addresses the data we can actually collect. Some human hand recordings provide only state. Robot teleoperation may record both reached state and an independent controller request. Current tactile measurements are sometimes available, but they do not automatically reveal the force the operator intended. Requiring every recording to contain all three targets would discard useful supervision.</p>
+  <div class="table-wrap"><table class="sources" aria-label="Which sources can supply which future labels">
+    <thead><tr><th scope="col">Source</th><th scope="col">Available supervision</th><th scope="col">What must be verified</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Human hand recording</th><td>State after a valid robot mapping</td><td>Mapping quality; no independent command or intended-force label by default</td></tr>
+      <tr><th scope="row">Robot teleoperation</th><td>State, plus command if its requested stage was recorded</td><td>Actual pose and requested target remain separate; sensed force is an observation</td></tr>
+      <tr><th scope="row">Purposefully labeled simulation</th><td>Any valid subset of S, C and T</td><td>Independent requests and desired loads are specified before execution; actual outcomes are stored separately</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>S1 keeps all three prediction heads.</strong> A shared visual model can use separate queries for state, command and tactile futures. A state-only example trains the state head; an S+C example trains those two heads; a fully labeled example can train all three. Missing historical observations are masked in attention, while a separate per-head label mask controls the loss. Leaving a head unsupervised does not remove it from the interface.</p>
+  <p>The streams describe a shared interaction, so learning their relationships may help when one is absent. However, knowing two does not generally determine the third: the same motion can arise under different loads and controller settings. An unlabeled tactile head needs valid tactile supervision elsewhere. Input masking alone cannot teach an unobserved force target.</p>
+  <p><strong>S0 learns with available intent and modality dropout.</strong> Dropping a future stream during training asks the executor to operate from the remaining signals and current feedback. The hidden stream must also disappear from derived errors and controller shortcuts. This can discourage reliance on a single easy cue, but robustness to missing inputs is not proof that the policy understands each stream.</p>
+  <p>There are separate records for a source that never supplied T, a deliberately hidden T input, a missing T training target, and a failed current tactile sensor. These change different parts of the learning problem. The selected unified S0 run uses independent dropout probability 0.1 per hand and modality, shared across its future horizon. Its teleoperation data has no valid desired-tactile labels, so this run cannot establish full three-stream competence. A unified S1 source-mixing ratio is not yet established.</p>
+
+  <h3>Compare information on the same underlying operation</h3>
+  <p>To isolate the contribution of a modality, the planned comparison derives S-only, S+C, S+T, C+T and S+C+T views from the same eligible simulation trajectories. Object, task, reference, initial-state distribution and physical limits stay matched. The views change which labels supervise S1 and which future streams reach S0. Comparing unrelated datasets instead would mix information availability with differences in objects, motion and data quality.</p>
+  <p>Split recordings or preparations before making these views; extra windows and masks do not create independent demonstrations. Compare fixed missing-modality settings separately from random dropout. When different policies act, their trajectories will diverge naturally, but they should face the same case distribution and completion criteria. Any view requiring an unavailable independent C or desired T remains unavailable.</p>
+  <figure class="method" id="supervision">
+    <picture>
+      <source media="(max-width:700px)" srcset="media/data-supervision-portrait.svg" width="424" height="1420">
+      <img src="media/data-supervision.svg" width="1200" height="780" alt="One simulated operation supplies only its valid pre-issued state, command and tactile labels. Matched S-only, S+C, S+T, C+T and S+C+T views share the same parent split. Their available labels train S1 heads; their available future streams condition S0, with dropout as a separate training choice.">
+    </picture>
+    <figcaption><strong>Change the available information, keep the underlying operation matched.</strong> This is the proposed partial-modality comparison. The blue/orange MuJoCo hands illustrate the shared robot interface; the static image is not a recorded trajectory or a policy result. A view is usable only when its source labels are valid.</figcaption>
+  </figure>
+
+  <h2 id="evaluation">What would show that S0 uses the intention?</h2>
+  <p>Begin with complete operations without external disturbances. Score physical validity, adherence to the available intent and object-task completion separately, then report their joint outcome. Watch the whole motion: contact transitions, support, progress, settling and release. A rotating cube that ignores the requested direction, or a hand that reaches a pose while dropping the object, answers the wrong question.</p>
+  <p>Change a physically meaningful part of the intention while holding the starting scene fixed: the direction of motion, a controller request under load, or the desired increase, decrease or transfer of force. Check whether the policy’s action and the physical result respond accordingly. Matched tracking-only, object-only and joint objectives can then test whether the two learning goals actually complement each other.</p>
+  <p>After clean execution works, apply disturbances <strong>during the operation</strong>, including sustained or changing loads as well as short pushes. In an isolated S0 comparison, replay exactly the same upstream intent for clean and disturbed trials. Compare feedback with both a fixed controller and the recorded clean action sequence under the same applied disturbance. An action change establishes a response; completing an operation that those controls fail would provide evidence of useful correction.</p>
+  <p>The full system should also run with S1 updating normally and asynchronously. S0’s role comes from the time needed to observe, infer and deliver the next high-level intention, not from requiring S1 to be artificially frozen. Record when the disturbance occurs, when S0 responds and when the next S1 update takes effect. This separates local feedback from a later high-level correction and tests whether the two continue the same task without a stale prediction undoing recovery.</p>
+  <p>The longer-term scope spans reorientation, changing finger contacts, load sharing, placement and insertion. Per-task specialists and shared policies should be compared at matched data exposure, with results kept separate across hand-only and larger robot control settings. A successful first task would justify extending the chain; it would not establish general dexterity or real-robot transfer.</p>
+
+  <h2 id="experiments">Earlier fixed-wrist cube studies</h2>
+  <p class="meta">Archived simulation development experiments · November 4–5, 2026</p>
+  <p class="scope">These clips use one fixed wrist, one hand, engineered references, 30 future points and 60 policy outputs for 20 joint targets, stiffnesses and damping parameters. The later clips use a command-centered residual controller. They are separate from the current floating, bimanual PPO system.</p>
+  <h3>A turning cube can hide a missed instruction</h3>
+  <p>An early policy made almost the same motion for two opposed goals. The reference fingertips differed by <span class="metric">61.47 mm RMS</span> across the two instructions; the actual fingertips differed by only <span class="metric">0.23 mm RMS</span>. Both cubes moved, but neither completed its requested turn. Visible motion was not evidence that the hand read the intention.</p>
+  <figure class="rollout">
+    <div class="figure-label">ARCHIVED POLICY · ACTUAL HAND AND SAME-CLOCK REFERENCE</div>
+    <video controls playsinline preload="metadata" poster="media/cube-hand-ghost-1.jpg" width="1024" height="590" aria-label="An early learned hand turns a cube while diverging from a translucent reference hand; orange rings show commanded fingertip positions."><source src="media/cube-hand-ghost-1.mp4" type="video/mp4"></video>
+    <figcaption>Solid fingers: recorded policy execution. Teal ghost: desired hand state. Orange rings: requested command. This displayed direction turned about 67° but finished 24.79° from its target. The paired comparison above uses both archived directions.</figcaption>
+  </figure>
+  <h3>First establish an executable reference</h3>
+  <p>A later engineering search produced opposed turns that could be executed from the same grasp. The search could inspect the object goal; its hand states and commands were then issued before execution. Desired tactile was absent. These are engineering references, not human demonstrations.</p>
+  <figure class="rollout">
+    <div class="figure-label">ENGINEERED REFERENCE · OPPOSED TURNS FROM ONE GRASP</div>
+    <video controls playsinline preload="metadata" aria-label="Two fixed controllers follow opposed engineered cube-turn references; a third panel shows an earlier learned policy failing during the reverse turn." poster="media/opposed-legal-engineering.jpg"><source src="media/opposed-legal-engineering.mp4" type="video/mp4"></video>
+    <figcaption>Both zero-residual receivers complete the turn and settle within the original limits. The third panel shows an older learned policy crossing near the target at speed, then stopping at the penetration limit. Passing near the desired face is not the same as finishing the turn.</figcaption>
+  </figure>
+  <h3>A learned receiver can follow both turns</h3>
+  <figure class="rollout">
+    <div class="figure-label">ONE FROZEN POLICY · TWO STATE–COMMAND INTENTIONS</div>
+    <video controls playsinline preload="metadata" aria-label="The same tracking policy follows two opposite cube-turn intentions from the same fixed-wrist grasp and settles at the end." poster="media/a64-opposed-clean.jpg"><source src="media/a64-opposed-clean.mp4" type="video/mp4"></video>
+    <figcaption>The tracking policy saved at 64 PPO updates passes both 12-second development trials, with 595/600 control frames inside the available tracking bands in each. Both use the same grasp. The fixed reference controller also passes; this pair establishes execution on these inputs, not an advantage from learned feedback.</figcaption>
+  </figure>
+  <p>The motion remains uneven. A later analysis found pauses shared by the engineering reference and learned policies. These clips do not establish smoother motion, generalization to new grasps, or full use of desired tactile.</p>
+  <h3>Changing an action is not enough to show recovery</h3>
+  <p>For one turn, I compared policy feedback, its saved clean action sequence and fixed control under the same measured push at the same instant. The upstream intention stayed unchanged. Across the two planned push directions, feedback passed <span class="metric">0/2</span> cases, versus <span class="metric">1/2</span> for each control.</p>
+  <figure class="rollout">
+    <div class="figure-label">MOVING PUSH · CLEAN / FEEDBACK / CLEAN ACTION TAPE</div>
+    <video controls playsinline preload="metadata" aria-label="Matched cube trials show the clean motion, policy feedback under a push, and the clean action tape under the same push; feedback narrowly fails the final angle limit." poster="media/a64-moving-positive.jpg"><source src="media/a64-moving-positive.mp4" type="video/mp4"></video>
+    <figcaption>The feedback trial changes its action but reaches a worst final-half-second error of 10.13°, exceeding the original 10° limit. The same-push action tape and the separately evaluated fixed controller pass. No additional success is attributable to feedback in this comparison.</figcaption>
+  </figure>
+  <details>
+    <summary>Scope of the historical comparison</summary>
+    <p>The positive and negative pushes each apply 0.41202 N for 80 ms during cube motion. The negative case stops at the original contact-penetration limit. Neither case meets the preregistered sustained-disruption condition for the conditional recovery statistic, so that statistic has no eligible denominator; both failures remain in task-success counts. The action tape retains low-level PD feedback and removes only policy-level feedback.</p>
+    <p>The 64-update examples and the later 128-update, 262,144-transition reward comparison belong to the earlier single-hand setup. They are not the training scale or evaluation population of the bimanual result below. Development examples from a shared grasp are not independent held-out trials.</p>
+  </details>
+
+  <h2 id="current">Current unified S0: stable training, no task success yet</h2>
+  <p>The project now uses two floating Wuji Hand 2.2 hands. Each has a 6-DoF wrist and 20 finger joints. PPO runs at 50 Hz with <strong>52 action values: 12 wrist velocities and 40 finger targets</strong>. Gains are not learned in this configuration. The intent packet has 10 time points over 0–0.9 s: 78 values per hand at each point, 156 across both hands and 1,560 in the full packet.</p>
+  <p>The nine-task scope is cube reorientation, pen spinning, force-controlled holding, flower alignment, clip-to-tray placement, lifting multiple tape rolls, bottle-cap manipulation, tool use and flower insertion. The frozen run reported here covers the five teleoperation task families from clip placement through flower insertion; it does not evaluate the first four.</p>
+  <p>The private teleoperation corpus contains <strong>25 parent recordings</strong> (13 Tianji, 12 Leo), processed into <strong>35 segments / 23,066 frames</strong>. The parent split is 15/5/5 for training, validation and test. Of 35 segment starts, 32 pass the initial-state checks. The actual training subset contains 17 segments / 12,665 frames; validation uses 10 segments from five different parents. Public hand–object data has not entered this run.</p>
+  <p>Object geometry and trajectories include nominal reconstruction rather than measured object ground truth. Some full reference trajectories retain substantial intersections even when their initial states pass. This dataset is an input to learning and diagnosis, not a collection of physically validated successful replays.</p>
+  <div class="table-wrap">
+  <table class="sources" aria-label="Frozen unified PPO validation before and after one thousand updates">
+    <thead><tr><th scope="col">Held-out reference metric</th><th scope="col">Before training</th><th scope="col">After 1,000 updates</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Reference coverage</th><td>62.7%</td><td>61.8%</td></tr>
+      <tr><th scope="row">Right wrist error</th><td>43.6 mm</td><td>65.4 mm</td></tr>
+      <tr><th scope="row">Left wrist error</th><td>75.3 mm</td><td>98.7 mm</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="meta">Coverage is the scored fraction of each reference before termination, averaged within each parent and then equally across parents. Wrist errors use the time prefix shared by the initial and final policies. Coverage is not a task-success rate.</p>
+  <p>Training completed <strong>512 environments × 1,000 PPO updates</strong>, or 16,384,000 environment transitions, with finite recorded metrics and no capacity overflow. Two independent CPU reloads produced identical actions in the reload check. These are numerical and checkpoint checks; the held-out reference coverage did not improve.</p>
+  <p><strong>No task success has been established in this unified system.</strong> The saved validation trajectories show no completed clip placement, simultaneous tape lift, effective wiping or flower insertion. Bottle contact does not establish unscrewing, and the nominal cap model lacks a thread constraint. Reaching the end of a reference segment also does not establish a completed operation.</p>
+  <details>
+    <summary>Where does the wrist error enter?</summary>
+    <p>An offline analysis reconstructs the wrist control targets by integrating the saved policy velocity actions through the native control rules. After training, target-to-reference mean errors are 66.8 mm on the right and 101.2 mm on the left. Actual-wrist-to-reconstructed-target errors are 2.1 and 5.1 mm. These use the same common-prefix, parent-weighted comparison.</p>
+    <p>Most of the mean position discrepancy is already in the policy’s targets. This does not identify a particular reward, architecture or data cause, and local tracking errors remain. It gives no evidence that raising PD gains alone would fix the operation. The reconstructed targets were not stored internal targets from the original GPU run.</p>
+  </details>
+
+  <h2 id="next">What needs to work next</h2>
+  <p>The immediate milestone is a complete clean operation: follow a credible reference, maintain the required contacts, move the object and finish within the physical limits. The current evidence identifies policy-target tracking and reference/contact consistency as unresolved problems. It does not yet establish the proposed executor.</p>
+  <p>Once that behavior is credible, the next stages are partial-modality comparisons, a qualified teacher and visual student, and learned S1 predictions in the normal asynchronous loop. Evaluation should retain clean trials alongside disturbances during motion, reporting tracking, completion and the contribution of feedback. The three-stream interface is the common hypothesis across these stages.</p>
+  <p>A model-based extension is also a research direction: reuse recorded state–action transitions to learn dynamics and improve the execution policy, while retaining experience across iterations. Its value would need to be measured through real environment samples, added computation and task outcomes against a matched PPO baseline. No model-based gain is claimed for the frozen PPO run above.</p>
+  <p>For the flower, the final question still starts at pickup and ends after release: did the stem clear the rim and stay in the vase, with the hand remaining faithful to the intended operation? The purpose of S0 is to learn the contact decisions that make that possible. That ability remains to be demonstrated.</p>
+  <footer><a href="../../">← Back to Hang Yu’s homepage</a></footer>
+</main>
+</body>
+</html>

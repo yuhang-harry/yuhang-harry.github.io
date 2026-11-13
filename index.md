@@ -20,6 +20,10 @@ I will join the **School of Computing and Data Science, The University of Hong K
 
 For my PhD, I hope to address **mobility in confined spaces, tasks requiring whole-body force, combined locomotion and manipulation in complex environments, and tasks requiring body contact**.
 
+## Research Notes
+
+[What should a robot hand learn from a demonstration?](notes/s0-s1/) A research note on teleoperation intent, contact, and the choices a dexterous hand makes during execution.
+
 {% include_relative _includes/publications.md %}
 
 ## Research Experience
