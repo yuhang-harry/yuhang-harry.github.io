@@ -22,7 +22,7 @@ For my PhD, I hope to address **mobility in confined spaces, tasks requiring who
 
 ## Research Notes
 
-[A dexterous interface between S1 and S0](notes/s0-s1/) Defining future state, command and tactile intent between high-level models and learned contact execution.
+[Towards a Unified Dexterous Manipulation Interface](notes/s0-s1/) Connecting high-level intent to learned contact skills through state, command and tactile futures.
 
 {% include_relative _includes/publications.md %}
 

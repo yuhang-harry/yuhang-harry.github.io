@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Defining a dexterous interface between high-level S1 models and feedback-driven S0 control: synchronized future state, command and tactile intent, shared across autonomous execution, teleoperation and demonstration-based learning.">
-  <title>A dexterous interface between S1 and S0 · Hang Yu</title>
+  <meta name="description" content="A unified S1–S0 interface connects high-level intention to learned dexterous execution through state, command and tactile futures, with joint prediction learned from heterogeneous data.">
+  <title>Towards a Unified Dexterous Manipulation Interface · Hang Yu</title>
   <link rel="canonical" href="https://yuhang-harry.github.io/notes/s0-s1/">
-  <meta name="citation_title" content="A dexterous interface between S1 and S0">
+  <meta name="citation_title" content="Towards a Unified Dexterous Manipulation Interface">
   <meta name="citation_author" content="Hang Yu">
   <meta name="citation_publication_date" content="2026/11/04">
   <meta name="citation_online_date" content="2026/11/13">
@@ -22,6 +22,7 @@
     h1 { margin: 0; max-width: 690px; font-size: clamp(34px, 6vw, 52px); line-height: 1.08; letter-spacing: -.035em; text-wrap: balance }
     .meta { color: #53635c; font-size: 13px; margin: 12px 0 24px }
     p { margin: 13px 0 }
+    .subtitle { margin: 16px 0 14px; max-width: 650px; color: #45625d; font: 20px/1.45 system-ui,sans-serif; text-wrap: balance }
     .opening { font-size: 1.14em; line-height: 1.55 }
     h2 { font-size: clamp(25px, 4vw, 31px); line-height: 1.2; margin: 34px 0 14px; letter-spacing: -.025em }
     figure { margin: 22px 0; border: 1px solid #d3dace; border-radius: 8px; padding: 18px 20px; background: #f3f4eb }
@@ -76,6 +77,16 @@
     #related-work, #references, #cite { scroll-margin-top: 20px }
     .bibtex { padding: 18px; border: 1px solid #d3dace; border-radius: 6px; background: #f3f6f2; white-space: pre-wrap; overflow-wrap: anywhere; font: 13px/1.6 ui-monospace, monospace }
     @media(max-width:520px) { .sources { font-size: 13px } .sources th,.sources td { padding-right: 8px } }
+
+    .task-gallery { width: min(1160px, calc(100vw - 44px)); position: relative; left: 50%; transform: translateX(-50%); display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px; margin: 24px 0 32px }
+    .task-card { margin: 0; padding: 0; overflow: hidden; background: #f5f7f7; border: 1px solid #cbd5d9 }
+    .task-card video { border-radius: 0; aspect-ratio: 3 / 2 }
+    .task-card figcaption { margin: 0; padding: 17px 20px 20px; font-size: 14px; line-height: 1.55 }
+    .task-card h3 { margin: 4px 0 11px; font: 600 21px/1.25 system-ui,sans-serif; color: #183b4b }
+    .task-kind { font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: #526578 }
+    .task-card p { margin: 8px 0 }
+    .task-card strong { color: #214c5b }
+    @media(max-width:700px) { .task-gallery { width:100%; grid-template-columns:1fr; gap:18px } .task-card figcaption { padding:14px 16px } }
   </style>
 </head>
 <body>
@@ -83,16 +94,17 @@
   <nav><a href="../../">← Hang Yu</a><span>RESEARCH NOTES</span></nav>
   <header>
     <p class="eyebrow">DEXTEROUS MANIPULATION</p>
-    <h1>A dexterous interface between S1 and S0</h1>
-    <p class="meta">Hang Yu · First written November 4, 2026 · <a href="#intent">The interface</a> · <a href="#experiments">Motion studies</a> · <a href="#current">Current implementation</a> · <a href="#related-work">Related work</a> · <a href="#cite">Cite this note</a></p>
-    <p class="opening">A high-level model plans to insert a flower into a vase. As the arm approaches, the stem shifts in the grasp. The hand must adjust its support and straighten the stem while continuing the insertion. This makes the interface between task intent and contact execution central to dexterity.</p>
+    <h1>Towards a Unified Dexterous Manipulation Interface</h1>
+    <p class="subtitle">Connecting high-level intent and physical execution through state, command and tactile futures.</p>
+    <p class="meta">Hang Yu · First written November 4, 2026 · <a href="#intent">The interface</a> · <a href="#tasks">Task examples</a> · <a href="#experiments">Motion study</a> · <a href="#current">Current implementation</a> · <a href="#related-work">Related work</a> · <a href="#cite">Cite this note</a></p>
+    <p class="opening">A high-level model may know that a flower belongs in a vase. Dexterity lies in carrying that intention through changing contact: straightening a stem that has slipped, easing a finger that blocks insertion, and releasing after the vase supports the flower.</p>
   </header>
-  <p>I propose a <strong>dexterous interface between S1 and S0</strong>. S1 expresses the intended future interaction; S0 learns how to realize it through physical feedback. The interface carries an end-effector reference together with three synchronized hand-intent streams: <strong>future state (S), requested command (C) and desired tactile (T)</strong>.</p>
-  <p>This definition assigns a role to each level. S1 can be a vision-language-action (VLA) or world-action model (WAM) that chooses how the operation should continue. S0 uses that future intention and current observations to choose motor targets and compliance, including local adjustments to support, force and grasp. S1 updates its plan as new observations arrive; S0 continues to respond between those updates.</p>
-  <p><strong>The intended use is autonomous dexterous manipulation.</strong> Operator input and recorded demonstrations can also be expressed through the interface, providing supervision and controlled references while its two sides are developed. Teleoperation is both a source of experience and one way to supply upstream intent. The interface defines the common meaning of that intent for the executor.</p>
-  <p>The research question is whether this separation, with explicit motion, request and contact goals, lets high-level models specify dexterous operations that a learned executor can carry out as contact changes. The note develops the interface definition, learning on both sides from partially labelled data, and tests of the resulting behavior. Earlier motion studies provide evidence about learned execution; they motivate the broader interface study.</p>
+  <p>I propose a <strong>unified interface for dexterous manipulation</strong>: future hand state (S), requested command (C) and desired tactile (T), synchronized with an end-effector trajectory. S1 expresses how an interaction should unfold through this interface; S0 learns how to realize it through physical feedback.</p>
+  <p>Each stream preserves a different part of the intention: <strong>the motion to realize, the request made to the hand, and the contact to maintain or change</strong>. Together they specify more of the operation than a pose trajectory alone. S0 learns how to reconcile these goals as the object moves, support changes and the hand departs from its expected state.</p>
+  <p><strong>Unified means preserving the same intent semantics across upstream sources, tasks and training data.</strong> A vision-language-action (VLA) or world-action model (WAM), an operator and a recorded reference can all supply the future packet. The intended motion and contact change with the task; the meanings of S, C and T remain consistent. Human demonstrations, robot teleoperation and simulation supervise whichever components they observe, with explicit robot mappings and contact calibration.</p>
+  <p>The note develops this S1–S0 interface and a learning strategy for both sides: joint prediction from partially labelled data, and RL execution that combines reference tracking with object-task completion. The central question is which parts of an intended interaction must be communicated for a learned executor to carry it through changing contact.</p>
 
-  <h2 id="intent">Define what S1 sends and what S0 executes</h2>
+  <h2 id="intent">One intention, three complementary futures</h2>
   <div class="table-wrap"><table class="sources" aria-label="Responsibilities on each side of the dexterous interface">
     <thead><tr><th scope="col">Level</th><th scope="col">Responsibility</th><th scope="col">Output</th></tr></thead>
     <tbody>
@@ -107,7 +119,7 @@
     <li><strong>Requested command (C):</strong> the upstream requested hand-target trajectory, preserving the request made under load even when the hand does not reach it.</li>
     <li><strong>Desired tactile (T):</strong> the contact trajectory the executor should pursue, including maintaining, increasing, easing, redistributing or releasing loads.</li>
   </ul>
-  <h3>Timing, representation and feedback</h3>
+  <h3>Preserve meaning across the S1–S0 boundary</h3>
   <p>S1 predicts all three streams together as a future chunk. Each stream carries timestamps, a coordinate frame, an anchor, validity and confidence. State changes are anchored to the observed state; command changes use the upstream requested-command anchor at the same defined control level. A valid zero tactile change means maintaining the anchored contact target, while a missing target leaves it unspecified. Current tactile measurements remain a separate feedback input to S0.</p>
   <p>The end-effector reference locates the hand in the scene. A representation such as MANO can carry the hand-state and requested-pose streams; a validated mapping relates them to the robot, and tactile targets use a specified contact representation. The same meanings apply when the packet comes from an autonomous model, an operator or a recorded reference. Robot mappings and contact calibration define where those meanings are shared.</p>
   <p>At each control step, S0 reads the relevant portion of the future packet by its timestamps and combines it with current feedback. S1 can issue a new chunk from newer observations while S0 continues execution. This division gives the high-level model responsibility for the intended continuation and the executor responsibility for the immediate physical response.</p>
@@ -124,7 +136,7 @@
     <figcaption><strong>One grasp, seen three ways.</strong> The cube makes the change in hand state visible. Its marked face turns 12.5° relative to the palm. The violet outline places the same hand at the upstream command, so its gap from the solid fingers shows what the motors were asked to do beyond the pose they reached. The heatmap illustrates a desired transfer of load. The arrows start at recorded contact points and point in the direction each finger pushed the cube. <a href="media/hand-interface.svg">Full-size SVG</a> · <a href="media/hand-interface.png">PNG</a></figcaption>
   </figure>
 
-  <h2 id="training">Learn S0 to execute the interface</h2>
+  <h2 id="training">Learn to turn intention into contact skill</h2>
   <p>S0 is an intent-conditioned policy trained with RL. Training packets can come from demonstrations or specified operation goals. Its objective combines <strong>tracking the valid S/C/T targets and progressing toward the object goal</strong>, with physical and actuator limits enforced during execution. The reference describes the requested motion and contact behavior. Demonstration-derived references also guide the policy to retain the demonstrated contact roles and continuity.</p>
   <p>State tracking compares the resulting hand motion with S. Command tracking compares the applied controller target with C after both are expressed at the same control level and time. Tactile tracking compares the measured contact signal with T in a common representation. Validity masks select the available terms. The object reward scores the requested outcome: a cube reaching the specified face, several objects being lifted together, or a flower remaining in the vase after release.</p>
   <p>Joint training from the start encodes a trade-off. A local departure from the reference costs tracking reward but can earn object reward by restoring support or clearing a contact. Continuing the reference then advances the original operation. Tracking-only, object-only and joint training test whether the learned behavior achieves that balance.</p>
@@ -135,7 +147,7 @@
   <p>A simulation teacher can use current object pose, motion, contact and geometry. Surface or mesh-derived features can expose the rim that blocks a stem or the support surface needed by a finger. The task outcome is defined separately in the reward; current object state is feedback about progress.</p>
   <p>The visual student would receive <strong>head and left/right wrist images</strong>, robot state, recent history and the same future intention. Successful teacher executions provide imitation targets. Corrections on states visited by the student and further task training address errors during its own execution. Comparing students with and without current touch tests the contribution of tactile feedback under the same intent interface.</p>
 
-  <h2 id="data">Train S1 to predict the interface from heterogeneous data</h2>
+  <h2 id="data">Train a common interface from heterogeneous data</h2>
   <p>Human motion recordings, robot teleoperation and simulated interactions provide supervision for different parts of the same interface. These are training sources for S1’s future predictions. The target interface stays complete: S1 predicts S, C and T together, while each example supervises the outputs for which it has valid labels.</p>
   <div class="table-wrap"><table class="sources" aria-label="Sources and valid supervision for the three intent streams">
     <thead><tr><th scope="col">Source</th><th scope="col">Potential targets</th><th scope="col">Label construction</th></tr></thead>
@@ -162,6 +174,48 @@
     <figcaption><strong>Change the available information, keep the underlying operation matched.</strong> Proposed data views, illustrated with a static blue/orange MuJoCo scene. Each view uses valid labels from the same operation and parent split. S0 execution and S1 prediction are evaluated separately before testing the full system.</figcaption>
   </figure>
 
+  <h2 id="tasks">One interface, different contact decisions</h2>
+  <p>The nine tasks below make the interface concrete. S1 specifies the intended continuation; S0 handles the contact decisions needed to carry it out. The examples range from changing the load at nearly the same hand pose to coordinating two hands through an insertion.</p>
+  <p class="scope">The pen clip is a recorded policy execution. The other eight clips are authored kinematic task illustrations: their hand and object motions depict the intended operations, rather than measured controller behavior. The desired-load bar illustrates a target. All use floating hands and a shared simulation view.</p>
+  <div class="task-gallery">
+    <figure class="task-card" id="task-cube">
+      <video controls playsinline preload="metadata" poster="media/task-cube.jpg" width="960" height="640" aria-label="Task illustration: Cube reorientation."><source src="media/task-cube.mp4" type="video/mp4"></video>
+      <figcaption><span class="task-kind">Task illustration</span><h3>Cube reorientation</h3><p><strong>S1 intention.</strong> Specify the turn through the wrist/hand-state continuation, the requested grasp and the intended support contacts.</p><p><strong>S0 execution role.</strong> Adjust finger support as the marked face turns toward its target.</p></figcaption>
+    </figure>
+    <figure class="task-card" id="task-pen">
+      <video controls playsinline preload="metadata" poster="media/task-pen.jpg" width="960" height="640" aria-label="Recorded policy execution: Pen spinning."><source src="media/task-pen.mp4" type="video/mp4"></video>
+      <figcaption><span class="task-kind">Recorded policy execution</span><h3>Pen spinning</h3><p><strong>S1 intention.</strong> Specify a continuous pen-turning reference with the sequence of finger contacts.</p><p><strong>S0 execution role.</strong> Keep the pen supported through contact changes. This clip shows an earlier learned single-task policy.</p></figcaption>
+    </figure>
+    <figure class="task-card" id="task-force">
+      <video controls playsinline preload="metadata" poster="media/task-force.jpg" width="960" height="640" aria-label="Task illustration: Force-controlled holding."><source src="media/task-force.mp4" type="video/mp4"></video>
+      <figcaption><span class="task-kind">Task illustration</span><h3>Force-controlled holding</h3><p><strong>S1 intention.</strong> Ask for a load increase or decrease while keeping the grasp nearly unchanged.</p><p><strong>S0 execution role.</strong> Use measured touch to regulate contact around the motion and command targets.</p></figcaption>
+    </figure>
+    <figure class="task-card" id="task-align">
+      <video controls playsinline preload="metadata" poster="media/task-align.jpg" width="960" height="640" aria-label="Task illustration: Flower alignment."><source src="media/task-align.mp4" type="video/mp4"></video>
+      <figcaption><span class="task-kind">Task illustration</span><h3>Flower alignment</h3><p><strong>S1 intention.</strong> Specify the stem alignment and which hand should support each part of the motion.</p><p><strong>S0 execution role.</strong> Redistribute support while straightening the stem.</p></figcaption>
+    </figure>
+    <figure class="task-card" id="task-clip">
+      <video controls playsinline preload="metadata" poster="media/task-clip.jpg" width="960" height="640" aria-label="Task illustration: Clip-to-tray placement."><source src="media/task-clip.mp4" type="video/mp4"></video>
+      <figcaption><span class="task-kind">Task illustration</span><h3>Clip-to-tray placement</h3><p><strong>S1 intention.</strong> Specify transport, lowering and the transition from holding to release.</p><p><strong>S0 execution role.</strong> Maintain the grasp during transport and ease contact as the tray takes the load.</p></figcaption>
+    </figure>
+    <figure class="task-card" id="task-tapes">
+      <video controls playsinline preload="metadata" poster="media/task-tapes.jpg" width="960" height="640" aria-label="Task illustration: Three tape rolls."><source src="media/task-tapes.mp4" type="video/mp4"></video>
+      <figcaption><span class="task-kind">Task illustration</span><h3>Three tape rolls</h3><p><strong>S1 intention.</strong> Lift three rolls with three fingers while preserving their separate support roles.</p><p><strong>S0 execution role.</strong> Coordinate the contacts so all three rolls remain supported through the lift.</p></figcaption>
+    </figure>
+    <figure class="task-card" id="task-cap">
+      <video controls playsinline preload="metadata" poster="media/task-cap.jpg" width="960" height="640" aria-label="Task illustration: Bottle-cap manipulation."><source src="media/task-cap.mp4" type="video/mp4"></video>
+      <figcaption><span class="task-kind">Task illustration</span><h3>Bottle-cap manipulation</h3><p><strong>S1 intention.</strong> Assign bottle stabilization to one hand and a turning continuation to the other.</p><p><strong>S0 execution role.</strong> Balance stabilizing contact, cap rotation and regrasping as needed.</p></figcaption>
+    </figure>
+    <figure class="task-card" id="task-wipe">
+      <video controls playsinline preload="metadata" poster="media/task-wipe.jpg" width="960" height="640" aria-label="Task illustration: Tool use / wiping."><source src="media/task-wipe.mp4" type="video/mp4"></video>
+      <figcaption><span class="task-kind">Task illustration</span><h3>Tool use / wiping</h3><p><strong>S1 intention.</strong> Specify a surface path together with the contact load to maintain.</p><p><strong>S0 execution role.</strong> Adjust contact as the tool moves along the surface.</p></figcaption>
+    </figure>
+    <figure class="task-card" id="task-insert">
+      <video controls playsinline preload="metadata" poster="media/task-insert.jpg" width="960" height="640" aria-label="Task illustration: Flower insertion."><source src="media/task-insert.mp4" type="video/mp4"></video>
+      <figcaption><span class="task-kind">Task illustration</span><h3>Flower insertion</h3><p><strong>S1 intention.</strong> Specify approach, alignment, insertion and the final release of the stem.</p><p><strong>S0 execution role.</strong> Correct the grasp near the rim, guide entry and transfer support before release.</p></figcaption>
+    </figure>
+  </div>
+
   <h2 id="related-work">Related work: what crosses the intent–execution boundary</h2>
   <p>The relevant comparison is how each method expresses intention, assigns responsibility for contact, and connects its high-level prediction to motor execution. This proposal defines <strong>a shared S1–S0 dex interface with synchronized S/C/T semantics</strong>, then studies a learned predictor and an RL executor on its two sides. Teleoperation control, reference tracking and tactile policies each provide a direct comparison for part of that design.</p>
 
@@ -180,32 +234,27 @@
   <p><strong>EgoDex</strong> <a class="citation" href="#ref-egodex" aria-label="Reference 7: EgoDex">[7]</a> supplies egocentric hand motion, and <strong>DexTouch-WM</strong> <a class="citation" href="#ref-dextouch-wm" aria-label="Reference 8: DexTouch-WM">[8]</a> learns action-conditioned visual–tactile prediction from human and robot interaction. <strong>TacThru</strong> <a class="citation" href="#ref-tacthru" aria-label="Reference 18: TacThru">[18]</a> combines simultaneous tactile and visual sensing with multimodal imitation. These sources and models motivate heterogeneous supervision: a recorded or predicted contact trajectory becomes a T target through its selection and use as an execution goal, with its provenance retained.</p>
   <p><strong>Taccel</strong> <a class="citation" href="#ref-taccel" aria-label="Reference 19: Taccel">[19]</a> provides GPU simulation of vision-based tactile sensors. <strong>Bench2Dex</strong> <a class="citation" href="#ref-bench2dex" aria-label="Reference 20: Bench2Dex">[20]</a> supplies a shared simulated tactile interface and structured bimanual evaluations. <strong>HandsOn</strong> <a class="citation" href="#ref-handson" aria-label="Reference 23: HandsOn">[23]</a> tests demonstration-based execution and transfer across assets, relations, skill compositions and deformable objects. These resources support evaluating the intended capability through contact establishment, coordinated motion and maintenance of the completed goal.</p>
 
-  <h2 id="experiments">Earlier studies of the execution layer</h2>
+  <h2 id="experiments">Evidence from learned execution</h2>
   <p>An earlier single-task PPO policy examines how learned execution maintains changing finger contacts. It uses a task-specific reference and simulator feedback, addressing the execution side of the proposed division. The full S1–S0 interface, including jointly predicted S/C/T, requires the evaluations below.</p>
   <h3>Keep the pen supported as contacts change</h3>
-  <p>The pen reference specifies the intended hand and object motion. A learned residual adjusts finger commands as the pen moves between contacts. The complete clip below shows the resulting contact sequence at its recorded speed, from the initial grasp through the last reference frame.</p>
-  <figure class="rollout">
-    <div class="figure-label">LEARNED PEN POLICY · COMPLETE REFERENCE CLIP · 1×</div>
-    <video controls playsinline preload="metadata" poster="media/pen-policy-complete.jpg" width="960" height="560" aria-label="A learned single-hand policy turns a pen through successive finger contacts over a complete ten-second reference clip."><source src="media/pen-policy-complete.mp4" type="video/mp4"></video>
-    <figcaption>Actual saved execution of the learned pen policy, shown from start to finish at its recorded speed. This is an earlier single-task, training-catalog example.</figcaption>
-  </figure>
+  <p>The pen reference specifies the intended hand and object motion. A learned residual adjusts finger commands as the pen moves between contacts. The <a href="#task-pen">complete pen clip above</a> shows the resulting contact sequence at its recorded speed, from the initial grasp through the last reference frame. Its blue hand and checkerboard scene use the same visual style as the task illustrations; the underlying recorded states are unchanged.</p>
   <details>
     <summary>Evaluation scope and complete counts</summary>
     <p>The pen policy was trained for 1,000 PPO updates. In one clean evaluation per training clip, it reached the end of 9/10 references; one stopped at the original position-error limit. The zero-residual controller completed 0/10, stopping during the initial grasp in every case. This comparison identifies a contribution to grasp stability; its early baseline terminations leave the later spin contribution unresolved. A saved-state audit found small joint-limit excursions in four completed clips; checks at every physics step remain incomplete.</p>
     <p>The video renders the previously saved simulator states for the complete pen clip at the recorded speed.</p>
   </details>
 
-  <h2 id="evaluation">Evaluate the interface and its two sides</h2>
+  <h2 id="evaluation">Test what unification contributes</h2>
   <p>The evaluation separates the information conveyed by the interface, S0’s ability to execute it, and S1’s ability to predict it. Keep the packet semantics and S0 fixed when comparing reliable references with learned S1 predictions. The first execution evaluation is a complete operation under clean conditions. Score reference adherence, physical validity and object completion separately, then report their joint outcome. Watch the full contact sequence: support, motion, contact transitions, settling and release.</p>
   <p>To test whether S0 uses the intention, hold the starting scene fixed and supply physically compatible alternative references: a different turn direction, a changed request under load or a different transfer of support between fingers. Keep unrelated streams matched where feasible, and measure action, contact and object outcomes. The key comparison is whether explicit C or T resolves an execution choice left ambiguous by S and current feedback. Pair this with tracking-only, object-only and joint objectives to test the contribution of the training terms.</p>
   <p>Compare fixed-gain execution with learned stiffness/damping under matched references and training exposure to test how compliance affects contact and completion. Once clean execution works, apply short, sustained or changing disturbances <strong>during the operation</strong>. For an isolated S0 comparison, keep the upstream intention fixed across the clean and disturbed trials. Compare policy feedback with a fixed controller and the saved clean action sequence under the same disturbance. The outcome of interest is useful correction: completing the intended operation when the matched controls cannot.</p>
   <p>In the full system, S1 updates normally and asynchronously. S0 uses feedback while the next observation, inference and intention update are in flight. Record the disturbance, the first S0 response and the arrival of the next S1 update to identify their contributions. The two levels should continue the same task as the local correction and new intention meet.</p>
 
-  <h2 id="next">Build both sides around the same interface</h2>
+  <h2 id="next">Towards unified dexterous execution</h2>
   <p>The next milestone is a complete clean operation that follows a credible reference, maintains the needed contacts and finishes the object task within physical limits. The interface definition comes first. Development then proceeds through S0 execution with reliable intent, a qualified teacher and visual student, learned S1 predictions, and the normal asynchronous loop with and without disturbances.</p>
   <p>The execution and prediction comparisons above test which information supports each operation and whether partially labelled data can teach S1 to supply it. Per-task specialists and shared policies should be compared at matched data exposure, with hand-only and larger robot settings reported separately. Reorientation, changing finger contacts, load sharing, placement and insertion give this comparison a concrete range of contact decisions.</p>
   <p>A model-based extension would reuse accumulated state–action transitions to learn dynamics and improve execution. SuperMimic <a class="citation" href="#ref-supermimic" aria-label="Reference 9: SuperMimic">[9]</a> demonstrates this direction for humanoid whole-body tracking: it learns differentiable dynamics from simulator transitions and trains a policy through short imagined rollouts. Applying that mechanism to dexterous contact is a further research direction. Its contribution should be measured through task outcomes, real environment samples and added computation against a matched PPO baseline.</p>
-  <p>The central proposal is <strong>a dexterous interface that connects high-level intention to learned physical execution</strong>. S1 communicates future state, command and contact goals; S0 learns how to realize them as contact changes. Demonstrations and teleoperation provide experience for learning this relationship. In autonomous manipulation, the same definition lets S1 specify the insertion while S0 adjusts the grasp, clears the rim and carries the operation through release.</p>
+  <p>The proposal is to <strong>unify dexterous intent at the S1–S0 boundary, and learn prediction and execution around that interface</strong>. State, command and tactile futures connect high-level plans to the motor decisions that realize them. Heterogeneous demonstrations teach the predictor; task-driven learning teaches the executor. For the flower, S1 expresses the intended insertion and support transitions, while S0 turns them into the changing grasp and contact that carry the stem into the vase.</p>
 
   <h2 id="current">Implementation snapshot: bimanual S0</h2>
   <p>The prototype reported here uses two floating Wuji Hand 2.2 hands, each with a 6-DoF wrist and 20 finger joints. PPO runs at 50 Hz with <strong>52 actions: 12 wrist velocities and 40 finger targets</strong>. Its intent packet contains 10 future points over 0–0.9 s.</p>
@@ -259,11 +308,11 @@
   </ol>
 
   <h2 id="cite">Cite this note</h2>
-  <p>Hang Yu. <em>A dexterous interface between S1 and S0.</em> Research note, November 4, 2026. <a href="citation.bib" download="yu2026learningtoexecute.bib">Download BibTeX</a>.</p>
+  <p>Hang Yu. <em>Towards a Unified Dexterous Manipulation Interface.</em> Research note, November 4, 2026. <a href="citation.bib" download="yu2026learningtoexecute.bib">Download BibTeX</a>.</p>
   <p class="meta">Originally written November 4, 2026. Text and literature revised November 13, 2026.</p>
   <pre class="bibtex"><code>@misc{yu2026learningtoexecute,
   author       = {Yu, Hang},
-  title        = {A dexterous interface between S1 and S0},
+  title        = {Towards a Unified Dexterous Manipulation Interface},
   year         = {2026},
   month        = nov,
   howpublished = {\url{https://yuhang-harry.github.io/notes/s0-s1/}},
