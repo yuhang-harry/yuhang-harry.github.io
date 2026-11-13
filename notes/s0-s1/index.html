@@ -87,7 +87,7 @@
     <li><strong>Desired tactile (T):</strong> how contact should evolve—maintain, increase, ease, redistribute or release finger loads.</li>
   </ul>
   <p>S1 predicts all three over a common future clock. Each stream retains its own anchor, validity and confidence; a delta is interpreted relative to its declared anchor. A valid zero tactile change means “maintain,” whereas a missing tactile target supplies no such instruction. The future tactile target and the contact measured after execution are different quantities.</p>
-  <p>The wrist or end-effector trajectory is another coordinated part of the intention. The hand interface should not turn a human hand representation directly into robot motor commands: it must preserve the relevant motion and requests through a validated robot mapping. The earlier study below holds the wrist fixed to isolate finger behavior. The current implementation also learns both wrists’ actions.</p>
+  <p>The wrist or end-effector trajectory is another coordinated part of the intention. The hand interface should not turn a human hand representation directly into robot motor commands: it must preserve the relevant motion and requests through a validated robot mapping. The historical hand interface in Figure 02 holds the wrist fixed to isolate finger behavior. The current implementation also learns both wrists’ actions.</p>
   <p>S0 receives the available future streams, current proprioception, controller feedback, current touch where available, and recent causal history. It learns when to prioritize motion, preserve support or change compliance and force. Its correction remains an execution decision: it does not rewrite the original command or relabel the resulting force as the desired tactile input.</p>
   <p class="scope">Figure 02 retains the historical fixed-wrist configuration, including its 30 future points and stiffness/damping outputs. It explains the three stream meanings. The current 10-point, 52-action implementation is specified <a href="#current">below</a>; a complete learned S1→S0 loop is not established by this figure.</p>
   <figure class="method" id="hand-interface" aria-label="How S0 reads S1’s hand intent">
@@ -143,41 +143,30 @@
   <p>The full system should also run with S1 updating normally and asynchronously. S0’s role comes from the time needed to observe, infer and deliver the next high-level intention, not from requiring S1 to be artificially frozen. Record when the disturbance occurs, when S0 responds and when the next S1 update takes effect. This separates local feedback from a later high-level correction and tests whether the two continue the same task without a stale prediction undoing recovery.</p>
   <p>The longer-term scope spans reorientation, changing finger contacts, load sharing, placement and insertion. Per-task specialists and shared policies should be compared at matched data exposure, with results kept separate across hand-only and larger robot control settings. A successful first task would justify extending the chain; it would not establish general dexterity or real-robot transfer.</p>
 
-  <h2 id="experiments">Earlier fixed-wrist cube studies</h2>
-  <p class="meta">Archived simulation development experiments · November 4–5, 2026</p>
-  <p class="scope">These clips use one fixed wrist, one hand, engineered references, 30 future points and 60 policy outputs for 20 joint targets, stiffnesses and damping parameters. The later clips use a command-centered residual controller. They are separate from the current floating, bimanual PPO system.</p>
-  <h3>A turning cube can hide a missed instruction</h3>
-  <p>An early policy made almost the same motion for two opposed goals. The reference fingertips differed by <span class="metric">61.47 mm RMS</span> across the two instructions; the actual fingertips differed by only <span class="metric">0.23 mm RMS</span>. Both cubes moved, but neither completed its requested turn. Visible motion was not evidence that the hand read the intention.</p>
+  <h2 id="experiments">Complete motions from earlier single-task policies</h2>
+  <p>Two earlier policies make the execution problem concrete: keep a pen supported while changing finger contacts, and carry an object through pickup, transport and release. Both were trained from scratch with PPO in simulation. They use task-specific references and feedback; they precede the simultaneous S/C/T interface proposed here.</p>
+
+  <h3>Turn the pen through changing contacts</h3>
+  <p>The reference specifies the intended hand and pen motion. A learned residual adjusts the finger commands as the pen moves between contacts. The example below follows a complete reference clip through its final frame, including the initial grasp. The useful behavior is the coordinated motion of the fingers and object over time.</p>
   <figure class="rollout">
-    <div class="figure-label">ARCHIVED POLICY · ACTUAL HAND AND SAME-CLOCK REFERENCE</div>
-    <video controls playsinline preload="metadata" poster="media/cube-hand-ghost-1.jpg" width="1024" height="590" aria-label="An early learned hand turns a cube while diverging from a translucent reference hand; orange rings show commanded fingertip positions."><source src="media/cube-hand-ghost-1.mp4" type="video/mp4"></video>
-    <figcaption>Solid fingers: recorded policy execution. Teal ghost: desired hand state. Orange rings: requested command. This displayed direction turned about 67° but finished 24.79° from its target. The paired comparison above uses both archived directions.</figcaption>
+    <div class="figure-label">LEARNED PEN POLICY · COMPLETE REFERENCE CLIP · 1×</div>
+    <video controls playsinline preload="metadata" poster="media/pen-policy-complete.jpg" width="960" height="560" aria-label="A learned single-hand policy turns a pen through successive finger contacts over a complete ten-second reference clip."><source src="media/pen-policy-complete.mp4" type="video/mp4"></video>
+    <figcaption>Actual saved execution of the learned pen policy, shown from start to finish at its recorded speed. This is an earlier single-task, training-catalog example.</figcaption>
   </figure>
-  <h3>First establish an executable reference</h3>
-  <p>A later engineering search produced opposed turns that could be executed from the same grasp. The search could inspect the object goal; its hand states and commands were then issued before execution. Desired tactile was absent. These are engineering references, not human demonstrations.</p>
+
+  <h3>Finish the placement, including release</h3>
+  <p>The same principle extends to an arm and hand. A nominal reference supplies the intended pickup and placement; a learned residual makes local command corrections while the reference continues. In a matched set of <strong>24 initial states, the learned policy completed 23 placements, compared with 12 for the reference controller</strong>. Both reached the table; the improvement was in completing release and settling.</p>
   <figure class="rollout">
-    <div class="figure-label">ENGINEERED REFERENCE · OPPOSED TURNS FROM ONE GRASP</div>
-    <video controls playsinline preload="metadata" aria-label="Two fixed controllers follow opposed engineered cube-turn references; a third panel shows an earlier learned policy failing during the reverse turn." poster="media/opposed-legal-engineering.jpg"><source src="media/opposed-legal-engineering.mp4" type="video/mp4"></video>
-    <figcaption>Both zero-residual receivers complete the turn and settle within the original limits. The third panel shows an older learned policy crossing near the target at speed, then stopping at the penetration limit. Passing near the desired face is not the same as finishing the turn.</figcaption>
+    <div class="figure-label">LEARNED ARM–HAND POLICY · PICKUP TO RELEASE · 1×</div>
+    <video controls playsinline preload="metadata" poster="media/placement-policy-complete.jpg" width="640" height="480" aria-label="A learned arm-and-hand policy grasps a red object, lifts and transports it to a green target, then releases it on the table."><source src="media/placement-policy-complete.mp4" type="video/mp4"></video>
+    <figcaption>The learned policy’s complete operation through its recorded success at 11.42 s. The green patch marks the placement target. This uses a fixed base, one arm and one hand with simulator-state feedback.</figcaption>
   </figure>
-  <h3>A learned receiver can follow both turns</h3>
-  <figure class="rollout">
-    <div class="figure-label">ONE FROZEN POLICY · TWO STATE–COMMAND INTENTIONS</div>
-    <video controls playsinline preload="metadata" aria-label="The same tracking policy follows two opposite cube-turn intentions from the same fixed-wrist grasp and settles at the end." poster="media/a64-opposed-clean.jpg"><source src="media/a64-opposed-clean.mp4" type="video/mp4"></video>
-    <figcaption>The tracking policy saved at 64 PPO updates passes both 12-second development trials, with 595/600 control frames inside the available tracking bands in each. Both use the same grasp. The fixed reference controller also passes; this pair establishes execution on these inputs, not an advantage from learned feedback.</figcaption>
-  </figure>
-  <p>The motion remains uneven. A later analysis found pauses shared by the engineering reference and learned policies. These clips do not establish smoother motion, generalization to new grasps, or full use of desired tactile.</p>
-  <h3>Changing an action is not enough to show recovery</h3>
-  <p>For one turn, I compared policy feedback, its saved clean action sequence and fixed control under the same measured push at the same instant. The upstream intention stayed unchanged. Across the two planned push directions, feedback passed <span class="metric">0/2</span> cases, versus <span class="metric">1/2</span> for each control.</p>
-  <figure class="rollout">
-    <div class="figure-label">MOVING PUSH · CLEAN / FEEDBACK / CLEAN ACTION TAPE</div>
-    <video controls playsinline preload="metadata" aria-label="Matched cube trials show the clean motion, policy feedback under a push, and the clean action tape under the same push; feedback narrowly fails the final angle limit." poster="media/a64-moving-positive.jpg"><source src="media/a64-moving-positive.mp4" type="video/mp4"></video>
-    <figcaption>The feedback trial changes its action but reaches a worst final-half-second error of 10.13°, exceeding the original 10° limit. The same-push action tape and the separately evaluated fixed controller pass. No additional success is attributable to feedback in this comparison.</figcaption>
-  </figure>
+  <p>These examples motivate learning the execution of a reference: the hand must preserve support, change contacts and finish the object task. They establish limited single-task behavior. Reading all three intent streams, learning from partially labelled sources and transferring to the unified bimanual system remain separate questions.</p>
   <details>
-    <summary>Scope of the historical comparison</summary>
-    <p>The positive and negative pushes each apply 0.41202 N for 80 ms during cube motion. The negative case stops at the original contact-penetration limit. Neither case meets the preregistered sustained-disruption condition for the conditional recovery statistic, so that statistic has no eligible denominator; both failures remain in task-success counts. The action tape retains low-level PD feedback and removes only policy-level feedback.</p>
-    <p>The 64-update examples and the later 128-update, 262,144-transition reward comparison belong to the earlier single-hand setup. They are not the training scale or evaluation population of the bimanual result below. Development examples from a shared grasp are not independent held-out trials.</p>
+    <summary>What these examples establish</summary>
+    <p>The pen policy was trained for 1,000 PPO updates. In one clean evaluation per training clip, it reached the end of 9/10 complete references; one stopped on the original position-error limit. The zero-residual reference controller completed 0/10, failing during the initial grasp in every case. That comparison supports a contribution to grasp stability, without isolating the contribution to the later spin. A saved-state audit found small joint-limit excursions in four completed clips; full checks at every physics step remain incomplete.</p>
+    <p>The placement comparison used one policy seed, one object and matched initial states drawn from the training distribution. The learned policy improved 11 of the 12 reference-controller failures and retained all 12 reference-controller successes; one trial still timed out. None of the 24 scored episodes in either group triggered a physical hard stop. This does not establish generalization to new objects, image-based control or disturbance recovery.</p>
+    <p>Both videos come from previously saved simulator states. The pen video retains the whole clip. The placement video shows the learned half of an existing paired recording up to its terminal state; the later frozen display tail is omitted. No operation is sped up or spliced.</p>
   </details>
 
   <h2 id="current">Current unified S0: stable training, no task success yet</h2>
