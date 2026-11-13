@@ -22,7 +22,7 @@ For my PhD, I hope to address **mobility in confined spaces, tasks requiring who
 
 ## Research Notes
 
-[Learning to execute a demonstration](notes/s0-s1/) A research note on teleoperation intent, contact, and the choices a dexterous hand makes during execution.
+[A dexterous interface between S1 and S0](notes/s0-s1/) Defining future state, command and tactile intent between high-level models and learned contact execution.
 
 {% include_relative _includes/publications.md %}
 
