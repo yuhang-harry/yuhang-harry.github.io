@@ -176,43 +176,35 @@
 
   <h2 id="tasks">One interface, different contact decisions</h2>
   <p>The nine tasks below make the interface concrete. S1 specifies the intended continuation; S0 handles the contact decisions needed to carry it out. The examples range from changing the load at nearly the same hand pose to coordinating two hands through an insertion.</p>
-  <p class="scope">The pen clip is a recorded policy execution. The other eight clips are authored kinematic task illustrations: their hand and object motions depict the intended operations, rather than measured controller behavior. The desired-load bar illustrates a target. All use floating hands and a shared simulation view.</p>
+  <p class="scope">The task definitions specify the intended interaction and the role of each level. The pen clip below is an earlier recorded single-task policy execution; it is evaluated separately from the proposed unified interface.</p>
   <div class="task-gallery">
     <figure class="task-card" id="task-cube">
-      <video controls playsinline preload="metadata" poster="media/task-cube-v2.jpg" width="960" height="640" aria-label="Task illustration: Cube reorientation."><source src="media/task-cube-v2.mp4" type="video/mp4"></video>
-      <figcaption><span class="task-kind">Task illustration</span><h3>Cube reorientation</h3><p><strong>S1 intention.</strong> Specify the turn through the wrist/hand-state continuation, the requested grasp and the intended support contacts.</p><p><strong>S0 execution role.</strong> Adjust finger support as the marked face turns toward its target.</p></figcaption>
+      <figcaption><span class="task-kind">Task definition</span><h3>Cube reorientation</h3><p><strong>S1 intention.</strong> Specify the turn through the wrist/hand-state continuation, the requested grasp and the intended support contacts.</p><p><strong>S0 execution role.</strong> Adjust finger support as the marked face turns toward its target.</p></figcaption>
     </figure>
     <figure class="task-card" id="task-pen">
       <video controls playsinline preload="metadata" poster="media/task-pen.jpg" width="960" height="640" aria-label="Recorded policy execution: Pen spinning."><source src="media/task-pen.mp4" type="video/mp4"></video>
       <figcaption><span class="task-kind">Recorded policy execution</span><h3>Pen spinning</h3><p><strong>S1 intention.</strong> Specify a continuous pen-turning reference with the sequence of finger contacts.</p><p><strong>S0 execution role.</strong> Keep the pen supported through contact changes. This clip shows an earlier learned single-task policy.</p></figcaption>
     </figure>
     <figure class="task-card" id="task-force">
-      <video controls playsinline preload="metadata" poster="media/task-force-v2.jpg" width="960" height="640" aria-label="Task illustration: Force-controlled holding."><source src="media/task-force-v2.mp4" type="video/mp4"></video>
-      <figcaption><span class="task-kind">Task illustration</span><h3>Force-controlled holding</h3><p><strong>S1 intention.</strong> Ask for a load increase or decrease while keeping the grasp nearly unchanged.</p><p><strong>S0 execution role.</strong> Use measured touch to regulate contact around the motion and command targets.</p></figcaption>
+      <figcaption><span class="task-kind">Task definition</span><h3>Force-controlled holding</h3><p><strong>S1 intention.</strong> Ask for a load increase or decrease while keeping the grasp nearly unchanged.</p><p><strong>S0 execution role.</strong> Use measured touch to regulate contact around the motion and command targets.</p></figcaption>
     </figure>
     <figure class="task-card" id="task-align">
-      <video controls playsinline preload="metadata" poster="media/task-align-v2.jpg" width="960" height="640" aria-label="Task illustration: Flower alignment."><source src="media/task-align-v2.mp4" type="video/mp4"></video>
-      <figcaption><span class="task-kind">Task illustration</span><h3>Flower alignment</h3><p><strong>S1 intention.</strong> Specify the stem alignment and which hand should support each part of the motion.</p><p><strong>S0 execution role.</strong> Redistribute support while straightening the stem.</p></figcaption>
+      <figcaption><span class="task-kind">Task definition</span><h3>Flower alignment</h3><p><strong>S1 intention.</strong> Specify the stem alignment and which hand should support each part of the motion.</p><p><strong>S0 execution role.</strong> Redistribute support while straightening the stem.</p></figcaption>
     </figure>
     <figure class="task-card" id="task-clip">
-      <video controls playsinline preload="metadata" poster="media/task-clip-v2.jpg" width="960" height="640" aria-label="Task illustration: Clip-to-tray placement."><source src="media/task-clip-v2.mp4" type="video/mp4"></video>
-      <figcaption><span class="task-kind">Task illustration</span><h3>Clip-to-tray placement</h3><p><strong>S1 intention.</strong> Specify transport, lowering and the transition from holding to release.</p><p><strong>S0 execution role.</strong> Maintain the grasp during transport and ease contact as the tray takes the load.</p></figcaption>
+      <figcaption><span class="task-kind">Task definition</span><h3>Clip-to-tray placement</h3><p><strong>S1 intention.</strong> Specify transport, lowering and the transition from holding to release.</p><p><strong>S0 execution role.</strong> Maintain the grasp during transport and ease contact as the tray takes the load.</p></figcaption>
     </figure>
     <figure class="task-card" id="task-tapes">
-      <video controls playsinline preload="metadata" poster="media/task-tapes-v2.jpg" width="960" height="640" aria-label="Task illustration: Three tape rolls."><source src="media/task-tapes-v2.mp4" type="video/mp4"></video>
-      <figcaption><span class="task-kind">Task illustration</span><h3>Three tape rolls</h3><p><strong>S1 intention.</strong> Lift three rolls with three fingers while preserving their separate support roles.</p><p><strong>S0 execution role.</strong> Coordinate the contacts so all three rolls remain supported through the lift.</p></figcaption>
+      <figcaption><span class="task-kind">Task definition</span><h3>Three tape rolls</h3><p><strong>S1 intention.</strong> Lift three rolls with three fingers while preserving their separate support roles.</p><p><strong>S0 execution role.</strong> Coordinate the contacts so all three rolls remain supported through the lift.</p></figcaption>
     </figure>
     <figure class="task-card" id="task-cap">
-      <video controls playsinline preload="metadata" poster="media/task-cap-v2.jpg" width="960" height="640" aria-label="Task illustration: Bottle-cap manipulation."><source src="media/task-cap-v2.mp4" type="video/mp4"></video>
-      <figcaption><span class="task-kind">Task illustration</span><h3>Bottle-cap manipulation</h3><p><strong>S1 intention.</strong> Assign bottle stabilization to one hand and a turning continuation to the other.</p><p><strong>S0 execution role.</strong> Balance stabilizing contact, cap rotation and regrasping as needed.</p></figcaption>
+      <figcaption><span class="task-kind">Task definition</span><h3>Bottle-cap manipulation</h3><p><strong>S1 intention.</strong> Assign bottle stabilization to one hand and a turning continuation to the other.</p><p><strong>S0 execution role.</strong> Balance stabilizing contact, cap rotation and regrasping as needed.</p></figcaption>
     </figure>
     <figure class="task-card" id="task-wipe">
-      <video controls playsinline preload="metadata" poster="media/task-wipe-v2.jpg" width="960" height="640" aria-label="Task illustration: Tool use / wiping."><source src="media/task-wipe-v2.mp4" type="video/mp4"></video>
-      <figcaption><span class="task-kind">Task illustration</span><h3>Tool use / wiping</h3><p><strong>S1 intention.</strong> Specify a surface path together with the contact load to maintain.</p><p><strong>S0 execution role.</strong> Adjust contact as the tool moves along the surface.</p></figcaption>
+      <figcaption><span class="task-kind">Task definition</span><h3>Tool use / wiping</h3><p><strong>S1 intention.</strong> Specify a surface path together with the contact load to maintain.</p><p><strong>S0 execution role.</strong> Adjust contact as the tool moves along the surface.</p></figcaption>
     </figure>
     <figure class="task-card" id="task-insert">
-      <video controls playsinline preload="metadata" poster="media/task-insert-v2.jpg" width="960" height="640" aria-label="Task illustration: Flower insertion."><source src="media/task-insert-v2.mp4" type="video/mp4"></video>
-      <figcaption><span class="task-kind">Task illustration</span><h3>Flower insertion</h3><p><strong>S1 intention.</strong> Specify approach, alignment, insertion and the final release of the stem.</p><p><strong>S0 execution role.</strong> Correct the grasp near the rim, guide entry and transfer support before release.</p></figcaption>
+      <figcaption><span class="task-kind">Task definition</span><h3>Flower insertion</h3><p><strong>S1 intention.</strong> Specify approach, alignment, insertion and the final release of the stem.</p><p><strong>S0 execution role.</strong> Correct the grasp near the rim, guide entry and transfer support before release.</p></figcaption>
     </figure>
   </div>
 
