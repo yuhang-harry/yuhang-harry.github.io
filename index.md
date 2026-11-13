@@ -22,7 +22,7 @@ For my PhD, I hope to address **mobility in confined spaces, tasks requiring who
 
 ## Research Notes
 
-[What should a robot hand learn from a demonstration?](notes/s0-s1/) A research note on teleoperation intent, contact, and the choices a dexterous hand makes during execution.
+[Learning to execute a demonstration](notes/s0-s1/) A research note on teleoperation intent, contact, and the choices a dexterous hand makes during execution.
 
 {% include_relative _includes/publications.md %}
 
