@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A research proposal for learning contact-aware execution from demonstrations: synchronized state, command and tactile intent, feedback control, and joint tracking and object-task learning.">
   <title>Learning to execute a demonstration · Hang Yu</title>
+  <link rel="canonical" href="https://yuhang-harry.github.io/notes/s0-s1/">
+  <meta name="citation_title" content="Learning to execute a demonstration">
+  <meta name="citation_author" content="Hang Yu">
+  <meta name="citation_publication_date" content="2026/11/13">
   <style>
     * { box-sizing: border-box }
     body { margin: 0; color: #202e2e; background: #fffdf8; font: 18px/1.68 Georgia, "Times New Roman", serif }
@@ -63,6 +67,13 @@
     .metric { font-variant-numeric: tabular-nums }
     .figure-label { line-height: 1.5 }
     :focus-visible { outline: 2px solid #157366; outline-offset: 4px }
+    .citation { white-space: nowrap; font: .78em system-ui, sans-serif; vertical-align: .12em; text-decoration: none }
+    .references { padding-left: 25px; font: 15px/1.6 system-ui, sans-serif }
+    .references li { margin: 12px 0; padding-left: 3px; scroll-margin-top: 20px }
+    .references cite { font-style: normal }
+    .references li:target { background: #eff5f1; outline: 5px solid #eff5f1 }
+    #related-work, #references, #cite { scroll-margin-top: 20px }
+    .bibtex { padding: 18px; border: 1px solid #d3dace; border-radius: 6px; background: #f3f6f2; white-space: pre-wrap; overflow-wrap: anywhere; font: 13px/1.6 ui-monospace, monospace }
     @media(max-width:520px) { .sources { font-size: 13px } .sources th,.sources td { padding-right: 8px } }
   </style>
 </head>
@@ -72,7 +83,7 @@
   <header>
     <p class="eyebrow">DEXTEROUS MANIPULATION</p>
     <h1>Learning to execute a demonstration</h1>
-    <p class="meta">Hang Yu · Updated November 13, 2026 · <a href="#intent">The interface</a> · <a href="#experiments">Motion studies</a> · <a href="#current">Current implementation</a></p>
+    <p class="meta">Hang Yu · Updated November 13, 2026 · <a href="#intent">The interface</a> · <a href="#experiments">Motion studies</a> · <a href="#current">Current implementation</a> · <a href="#related-work">Related work</a> · <a href="#cite">Cite this note</a></p>
     <p class="opening">A robot follows the demonstrated wrist path toward a vase, but the stem has shifted in its grasp. Finishing the insertion requires the fingers to straighten the stem while the arm continues the intended motion.</p>
   </header>
   <p>I propose a division between <strong>S1, which predicts future intent, and S0, which learns to execute it through feedback</strong>. S1 specifies the intended hand motion, controller request and contact behavior on a shared future clock. S0 uses those streams together with the current hand and contact state to choose motor actions, make a local correction and return to the demonstrated motion.</p>
@@ -100,6 +111,7 @@
 
   <h2 id="training">Learn reference tracking and object completion together</h2>
   <p>S0 is a reference-conditioned execution policy trained with RL. The reference guides where the operation should go; feedback describes how it is unfolding. Its objective combines <strong>tracking the valid S/C/T streams, progressing toward the object goal, and respecting physical and control limits</strong>.</p>
+  <p>This design is closely related to reference-conditioned control in DexTrack <a class="citation" href="#ref-dextrack" aria-label="Reference 1: DexTrack">[1]</a> and Dexplore <a class="citation" href="#ref-dexplore" aria-label="Reference 2: Dexplore">[2]</a>. The proposed S/C/T interface makes the motion, controller request and contact goal explicit inputs to that execution problem.</p>
   <p>State tracking scores the resulting hand motion against S. Command tracking compares the applied controller request with C. Tactile tracking compares measured loads with T. Each term uses the labels that are valid for that trajectory. The object reward separately scores outcomes such as a cube turning to the requested face, several objects being lifted together, or a flower remaining in the vase after release.</p>
   <p>Learning both objectives from the start creates the desired trade-off. A local departure from the reference still costs tracking reward, but it can earn object reward by restoring support or clearing a contact. Returning to the reference then continues the intended operation. Tracking-only and object-only objectives provide direct comparisons for this joint objective.</p>
   <p><strong>A reasonable reference can guide RL even when direct replay is imperfect.</strong> Differences in geometry, contact and actuation can make the same recorded motion behave differently in simulation. S0 can learn small corrections around that motion. Real-to-sim should preserve the demonstrated scene: the object’s scale and shape, support surfaces, timing, hand mapping and the contacts that move the task forward. Correcting reconstruction errors makes the reference useful; learning the remaining execution adjustments is S0’s job.</p>
@@ -111,6 +123,7 @@
 
   <h2 id="data">Train one interface from partially labelled data</h2>
   <p>Useful demonstrations come with different labels. Human hand recordings may supply motion; robot teleoperation can also preserve the controller request; purposefully labelled simulation can specify desired contact behavior. A shared interface lets these sources contribute to the parts they actually supervise.</p>
+  <p>EgoDex <a class="citation" href="#ref-egodex" aria-label="Reference 7: EgoDex">[7]</a> provides egocentric video with 3D hand and finger tracking. DexTouch-WM <a class="citation" href="#ref-dextouch-wm" aria-label="Reference 8: DexTouch-WM">[8]</a> learns from human and robot visual–tactile interactions. These illustrate the range of available supervision; converting it into S/C/T labels requires preserving what each recording actually measures.</p>
   <div class="table-wrap"><table class="sources" aria-label="Which sources supply which training targets">
     <thead><tr><th scope="col">Source</th><th scope="col">Available targets</th><th scope="col">How to use them</th></tr></thead>
     <tbody>
@@ -186,11 +199,47 @@
     <p>Offline integration of saved wrist-velocity actions reconstructs the policy targets. After training, mean target-to-reference errors are 66.8 mm on the right and 101.2 mm on the left; actual-wrist-to-reconstructed-target errors are 2.1 and 5.1 mm. These use the same common-prefix, parent-weighted comparison. They locate the discrepancy in the command chain; identifying its cause requires examining policy learning and reference quality. The targets are reconstructed from saved actions.</p>
   </details>
 
+  <h2 id="related-work">Related work</h2>
+  <p>Recent work develops several parts of the path from human demonstrations to contact-aware execution. The connections below locate the proposed interface within reference tracking, bimanual control, tactile prediction and dynamics learning.</p>
+  <h3>From a reference motion to an executable skill</h3>
+  <p>DexTrack <a class="citation" href="#ref-dextrack" aria-label="Reference 1: DexTrack">[1]</a> alternates learning a general tracking controller with mining successful tracking demonstrations, combining reinforcement and imitation learning. Dexplore <a class="citation" href="#ref-dexplore" aria-label="Reference 2: Dexplore">[2]</a> uses human references as soft guidance within adaptive exploration scopes, coupling retargeting and control before distilling a vision-based controller. Both make reference-conditioned learning a practical route from recorded motion to physical execution. They motivate the central objective here: preserve the demonstrated operation while learning the contact adjustments that complete it.</p>
+  <p>AdaDexTrack <a class="citation" href="#ref-adadextrack" aria-label="Reference 3: AdaDexTrack">[3]</a> adds online modulation of the reference, object representation and positional targets around a distilled tracker. Its feedback corrections make the relationship between upstream intent and local execution especially relevant. In the proposed S0/S1 design, the supplied intent remains an explicit record, S0 chooses the immediate motor correction, and subsequent S1 predictions can update the intended future. This separation supports evaluating local feedback and upstream replanning independently.</p>
+  <h3>Coordinating two hands through contact</h3>
+  <p>ManipTrans <a class="citation" href="#ref-maniptrans" aria-label="Reference 4: ManipTrans">[4]</a> first learns a general hand-motion imitator, then trains task-specific residuals under interaction constraints to transfer bimanual skills. DONIC <a class="citation" href="#ref-donic" aria-label="Reference 5: DONIC">[5]</a> trains a shared bimanual tracker with PPO and behavioral cloning, reusing successful executions. Its object-centered rewards supervise each hand according to its reference contact role. These methods make coordination concrete: each hand’s motion matters through its contribution to the shared object interaction. That perspective informs the joint tracking and object-completion objective, and the planned comparison between specialists and a shared executor.</p>
+  <h3>Predicting contact and reacting to it</h3>
+  <p>TouchWorld <a class="citation" href="#ref-touchworld" aria-label="Reference 6: TouchWorld">[6]</a> combines tactile subgoal prediction, goal-conditioned action chunks and rapid residual corrections from recent tactile and proprioceptive feedback. It is a close architectural connection to future contact intent plus a fast execution layer. This note develops the interface around that division: S, C and T share a future clock, remain distinct under load, and carry validity information for learning from partially labelled sources.</p>
+  <p>EgoDex <a class="citation" href="#ref-egodex" aria-label="Reference 7: EgoDex">[7]</a> contributes motion-rich egocentric demonstrations. DexTouch-WM <a class="citation" href="#ref-dextouch-wm" aria-label="Reference 8: DexTouch-WM">[8]</a> uses compatible human and robot tactile sensing and retargeted actions to learn action-conditioned visual–tactile prediction. For the interface proposed here, measured or predicted contact describes an outcome; a desired T label specifies the contact the executor should pursue. Keeping that meaning explicit allows motion-only and contact-rich data to supervise a shared model through their valid targets.</p>
+
   <h2 id="next">From a clean operation to a shared executor</h2>
   <p>The next milestone is a complete clean operation that follows a credible reference, maintains the needed contacts and finishes the object task within physical limits. The development order is S0 execution first, then a qualified teacher and visual student, learned S1 intent, and evaluation of the normal asynchronous loop with and without disturbances.</p>
   <p>Matched modality views can test which information supports each operation. Per-task specialists and shared policies should be compared at matched data exposure, with hand-only and larger robot settings reported separately. Reorientation, changing finger contacts, load sharing, placement and insertion give this comparison a concrete range of contact decisions.</p>
-  <p>A model-based extension would reuse accumulated state–action transitions to learn dynamics and improve execution. Its contribution should be measured through task outcomes, real environment samples and added computation against a matched PPO baseline.</p>
+  <p>A model-based extension would reuse accumulated state–action transitions to learn dynamics and improve execution. SuperMimic <a class="citation" href="#ref-supermimic" aria-label="Reference 9: SuperMimic">[9]</a> demonstrates this direction for humanoid whole-body tracking: it learns differentiable dynamics from simulator transitions and trains a policy through short imagined rollouts. Applying that mechanism to dexterous contact is a further research direction. Its contribution should be measured through task outcomes, real environment samples and added computation against a matched PPO baseline.</p>
   <p>The proposal is to learn <strong>how to carry out the demonstrated operation as contact changes</strong>. S1 expresses the intended motion, request and contact goal; S0 learns the motor decisions that connect them to the physical task. For the flower, that means preserving the insertion motion while adjusting the grasp so the stem clears the rim and remains in the vase after release.</p>
+
+  <h2 id="references">References</h2>
+  <ol class="references">
+    <li id="ref-dextrack">Xueyi Liu et al. <a href="https://arxiv.org/abs/2502.09614"><cite>DexTrack: Towards Generalizable Neural Tracking Control for Dexterous Manipulation from Human References.</cite></a> ICLR, 2025.</li>
+    <li id="ref-dexplore">Sirui Xu et al. <a href="https://arxiv.org/abs/2509.09671"><cite>Dexplore: Scalable Neural Control for Dexterous Manipulation from Reference-Scoped Exploration.</cite></a> CoRL, 2025.</li>
+    <li id="ref-adadextrack">Jianibieke Adalibieke et al. <a href="https://arxiv.org/abs/2610.33852"><cite>AdaDexTrack: Dynamic Modulation for Adaptive and Generalizable Dexterous Manipulation Tracking.</cite></a> CVPR, 2026.</li>
+    <li id="ref-maniptrans">Kailin Li et al. <a href="https://openaccess.thecvf.com/content/CVPR2025/html/Li_ManipTrans_Efficient_Dexterous_Bimanual_Manipulation_Transfer_via_Residual_Learning_CVPR_2025_paper.html"><cite>ManipTrans: Efficient Dexterous Bimanual Manipulation Transfer via Residual Learning.</cite></a> CVPR, 2025.</li>
+    <li id="ref-donic">Mingze Sun et al. <a href="https://arxiv.org/abs/2610.29997"><cite>DONIC: Generalist Dexterous Bimanual Tracking Control from Human Demonstrations.</cite></a> arXiv preprint, 2026.</li>
+    <li id="ref-touchworld">Jianyi Zhou et al. <a href="https://arxiv.org/abs/2607.07287"><cite>TouchWorld: A Predictive and Reactive Tactile Foundation Model for Dexterous Manipulation.</cite></a> arXiv preprint, 2026.</li>
+    <li id="ref-egodex">Ryan Hoque et al. <a href="https://arxiv.org/abs/2505.11709"><cite>EgoDex: Learning Dexterous Manipulation from Large-Scale Egocentric Video.</cite></a> ICLR, 2026.</li>
+    <li id="ref-dextouch-wm">Yan Qin et al. <a href="https://arxiv.org/abs/2609.20649"><cite>DexTouch-WM: Learning Action-Conditioned Tactile World Models from Human Touch for Dexterous Robot Manipulation.</cite></a> arXiv preprint, 2026.</li>
+    <li id="ref-supermimic">Qiayuan Liao et al. <a href="https://arxiv.org/abs/2610.28480"><cite>SuperMimic: Scaling Humanoid Whole-Body Control with One Differentiable World Model.</cite></a> Accepted at CoRL, 2026.</li>
+  </ol>
+
+  <h2 id="cite">Cite this note</h2>
+  <p>Hang Yu. <em>Learning to execute a demonstration.</em> Research note, November 13, 2026. <a href="citation.bib" download="yu2026learningtoexecute.bib">Download BibTeX</a>.</p>
+  <pre class="bibtex"><code>@misc{yu2026learningtoexecute,
+  author       = {Yu, Hang},
+  title        = {Learning to execute a demonstration},
+  year         = {2026},
+  month        = nov,
+  howpublished = {\url{https://yuhang-harry.github.io/notes/s0-s1/}},
+  url          = {https://yuhang-harry.github.io/notes/s0-s1/},
+  note         = {Research note}
+}</code></pre>
   <footer><a href="../../">← Back to Hang Yu’s homepage</a></footer>
 </main>
 </body>
