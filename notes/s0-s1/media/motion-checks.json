@@ -1,0 +1,242 @@
+{
+  "version": 1,
+  "scope": "Nine task videos explaining contact decisions at the proposed S1-S0 interface. Controller illustrations do not establish learned S0 performance or real-world validity.",
+  "engine": "MuJoCo 3.11.0",
+  "hand_asset": {
+    "url": "https://github.com/wuji-technology/wuji-description",
+    "commit": "829c9aa27cb12c3a49d5b8d63c9869dd8f656702",
+    "license": "MIT"
+  },
+  "frame_rate": 50,
+  "playback_rate": 1,
+  "collision_scope": "Native convex collision meshes, including the hand asset's existing exclusions between adjacent links. Reported depths are solver overlap distances.",
+  "videos": [
+    {
+      "task": "cube",
+      "video": "task-cube-physics-v3.mp4",
+      "sha256": "d5db62fa917c6fb9f2d95329fd05675e9561d667ce71b0db033967a4ba83b9e7",
+      "kind": "hand-coded physics illustration",
+      "duration_s": 12.0,
+      "physics_steps": 12000,
+      "physics_dt_s": 0.001,
+      "checked_scope": "Every physics step plus refreshed contacts at every saved 50 Hz state",
+      "per_step_max_penetration_mm": {
+        "depth": 0.6124276702779499,
+        "self": 0.0,
+        "hand_scene": 0.0
+      },
+      "saved_state_max_penetration_mm": {
+        "hand_object": 0.19146253997443663,
+        "self": 0.0,
+        "hand_scene": 0.0,
+        "object_scene": 0.0
+      },
+      "max_joint_limit_excess_rad": 0,
+      "object_pose_overwrites_after_initialization": 0,
+      "object_external_wrench": 0.0,
+      "max_wrist_angular_speed_rad_s": 1.1430895022284404,
+      "last_second_wrist_angular_speed_p95_rad_s": 3.3657306801547404e-05
+    },
+    {
+      "task": "pen",
+      "video": "task-pen-archive-v3.mp4",
+      "sha256": "01ad3102221696d9fa61a55b3c6ddcca9cff29999f6e7652da5b52e06da0d3f4",
+      "kind": "archived policy execution",
+      "duration_s": 8.46,
+      "saved_frames": 423,
+      "checked_scope": "all saved 50 Hz states, not unsaved physics substeps; native archived collision geometry and limits",
+      "max_hand_object_penetration_mm": 2.246754871869358,
+      "max_joint_limit_excess_deg": 0,
+      "frames_without_contact": 0
+    },
+    {
+      "task": "force",
+      "video": "task-force-physics-v3.mp4",
+      "sha256": "a83fa3f6befaa7a011b10852afc7cebef0c5fc6431731f0bba91d4494fcf4a01",
+      "kind": "hand-coded physics illustration",
+      "duration_s": 12.0,
+      "physics_steps": 12000,
+      "physics_dt_s": 0.001,
+      "checked_scope": "Every physics step plus refreshed contacts at every saved 50 Hz state",
+      "per_step_max_penetration_mm": {
+        "depth": 0.6124276702779499,
+        "self": 0.0,
+        "hand_scene": 0.0
+      },
+      "saved_state_max_penetration_mm": {
+        "hand_object": 0.19146253997443663,
+        "self": 0.0,
+        "hand_scene": 0.0,
+        "object_scene": 0.0
+      },
+      "max_joint_limit_excess_rad": 0,
+      "object_pose_overwrites_after_initialization": 0,
+      "object_external_wrench": 0.0,
+      "max_wrist_angular_speed_rad_s": 1.1430895022284404,
+      "last_second_wrist_angular_speed_p95_rad_s": 0.0003611461296834475,
+      "measured_load_phase_means_N": {
+        "4-4.5": 6.446799145453653,
+        "6.5-7.5": 8.833470355426886,
+        "10.5-12": 5.919180986764097
+      }
+    },
+    {
+      "task": "align",
+      "video": "task-align-physics-v3.mp4",
+      "sha256": "3fc83d9fc02071edab4e66c62529b587bdbe2c61766657746ad7746805c62030",
+      "kind": "hand-coded physics illustration",
+      "duration_s": 14.0,
+      "physics_steps": 14000,
+      "physics_dt_s": 0.001,
+      "checked_scope": "Every physics step plus refreshed contacts at every saved 50 Hz state",
+      "per_step_max_penetration_mm": {
+        "depth": 0.19223325345072725,
+        "self": 0.0,
+        "hand_scene": 0.0
+      },
+      "saved_state_max_penetration_mm": {
+        "hand_object": 0.1856815249230215,
+        "self": 0.0,
+        "hand_scene": 0.0,
+        "object_scene": 0.0
+      },
+      "max_joint_limit_excess_rad": 0,
+      "object_pose_overwrites_after_initialization": 0,
+      "object_external_wrench": 0.0,
+      "max_wrist_angular_speed_rad_s": 0.5906569521638713,
+      "last_second_wrist_angular_speed_p95_rad_s": 0.0038548173490648334
+    },
+    {
+      "task": "clip",
+      "video": "task-clip-physics-v3.mp4",
+      "sha256": "467f5196564043d5db25cba8a3a039f005be73485e8ca34f0e6237875bc1e655",
+      "kind": "hand-coded physics illustration",
+      "duration_s": 12.0,
+      "physics_steps": 12000,
+      "physics_dt_s": 0.001,
+      "checked_scope": "Every physics step plus refreshed contacts at every saved 50 Hz state",
+      "per_step_max_penetration_mm": {
+        "depth": 0.6124482799930506,
+        "self": 0.0,
+        "hand_scene": 0.07442754302671578
+      },
+      "saved_state_max_penetration_mm": {
+        "hand_object": 0.27080419483420454,
+        "self": 0.0,
+        "hand_scene": 0.07340090592395862,
+        "object_scene": 0.8040802587162472
+      },
+      "max_joint_limit_excess_rad": 0,
+      "object_pose_overwrites_after_initialization": 0,
+      "object_external_wrench": 0.0,
+      "max_wrist_angular_speed_rad_s": 1.1431219585039614,
+      "last_second_wrist_angular_speed_p95_rad_s": 2.848371337152542e-05
+    },
+    {
+      "task": "tapes",
+      "video": "task-tapes-physics-v3.mp4",
+      "sha256": "2d2203ae75032636e1f57e4bd42eb68348edd2635f5f1db32f2c6d8f08a3517f",
+      "kind": "hand-coded physics illustration",
+      "duration_s": 14.0,
+      "physics_steps": 14000,
+      "physics_dt_s": 0.001,
+      "checked_scope": "Every physics step plus refreshed contacts at every saved 50 Hz state",
+      "per_step_max_penetration_mm": {
+        "depth": 0.21666055016082025,
+        "self": 0.0,
+        "hand_scene": 0.0
+      },
+      "saved_state_max_penetration_mm": {
+        "hand_object": 0.1784960097482001,
+        "self": 0.0,
+        "hand_scene": 0.0,
+        "object_scene": 2.663740780613857
+      },
+      "max_joint_limit_excess_rad": 0,
+      "object_pose_overwrites_after_initialization": 0,
+      "object_external_wrench": 0.0,
+      "max_wrist_angular_speed_rad_s": 1.5791454288222078,
+      "last_second_wrist_angular_speed_p95_rad_s": 0.008387507412681213,
+      "hand": "left",
+      "finger_assignment": [
+        "thumb",
+        "index",
+        "ring"
+      ],
+      "geometry": "Three independent annular rigid bodies; nominal dimensions",
+      "source_relation": "Finger roles and task sequence checked against the original recording and its explicit task binding; illustrative geometry and controller"
+    },
+    {
+      "task": "cap",
+      "video": "task-cap-physics-v3.mp4",
+      "sha256": "6609b03c620cb959a3cdc828def80aed68416924619c4f0035f3100aea6e64ca",
+      "kind": "hand-coded physics illustration",
+      "duration_s": 12.0,
+      "physics_steps": 12000,
+      "physics_dt_s": 0.001,
+      "checked_scope": "Every physics step plus refreshed contacts at every saved 50 Hz state",
+      "per_step_max_penetration_mm": {
+        "depth": 0.15176900781228114,
+        "self": 0.07532791496947773,
+        "hand_scene": 0.0
+      },
+      "saved_state_max_penetration_mm": {
+        "hand_object": 0.15151939572406714,
+        "self": 0.024166015504912958,
+        "hand_scene": 0.0,
+        "object_scene": 0.016817314478267346
+      },
+      "max_joint_limit_excess_rad": 0,
+      "object_pose_overwrites_after_initialization": 0,
+      "object_external_wrench": 0.0,
+      "max_wrist_angular_speed_rad_s": 0.6359739723399536,
+      "last_second_wrist_angular_speed_p95_rad_s": 0.0006200615005386522,
+      "cap_turn_degrees": 60.964782218024204,
+      "thread_error_m": 2.987226068481056e-05,
+      "bottle_support": "Physical shallow holder and left hand"
+    },
+    {
+      "task": "wipe",
+      "video": "task-wipe-contact-v1.mp4",
+      "sha256": "32319246ffd26e838d75e7c821bce0f87f52bf92f26353af8e280447e42bc14f",
+      "kind": "hand-coded physics illustration",
+      "duration_s": 12,
+      "physics_steps": 12000,
+      "physics_dt_s": 0.001,
+      "checked_scope": "Every physics step; native contact geometry and joint limits",
+      "max_hand_object_penetration_mm": 0.14020966553032788,
+      "max_self_penetration_mm": 0,
+      "max_joint_limit_excess_rad": 0,
+      "object_pose_overwrites_after_initialization": 0,
+      "object_external_wrench": 0,
+      "zero_floor_contact_steps": 17,
+      "max_floor_clearance_mm": 0.006509811053649617
+    },
+    {
+      "task": "insert",
+      "video": "task-insert-physics-v3.mp4",
+      "sha256": "3dfa1922fb1a34e63ab7b92f82209e0654db0f54b0f2252aaebb4aeb08003589",
+      "kind": "hand-coded physics illustration",
+      "duration_s": 14.0,
+      "physics_steps": 14000,
+      "physics_dt_s": 0.001,
+      "checked_scope": "Every physics step plus refreshed contacts at every saved 50 Hz state",
+      "per_step_max_penetration_mm": {
+        "depth": 0.19223325345068154,
+        "self": 0.0,
+        "hand_scene": 0.0
+      },
+      "saved_state_max_penetration_mm": {
+        "hand_object": 0.18580673390472258,
+        "self": 0.0,
+        "hand_scene": 0.0,
+        "object_scene": 0.5792584818036326
+      },
+      "max_joint_limit_excess_rad": 0,
+      "object_pose_overwrites_after_initialization": 0,
+      "object_external_wrench": 0.0,
+      "max_wrist_angular_speed_rad_s": 0.26868734856587395,
+      "last_second_wrist_angular_speed_p95_rad_s": 2.0793138197614966e-07
+    }
+  ]
+}
