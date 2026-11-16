@@ -134,37 +134,40 @@
     },
     {
       "task": "tapes",
-      "video": "task-tapes-physics-v3.mp4",
-      "sha256": "2d2203ae75032636e1f57e4bd42eb68348edd2635f5f1db32f2c6d8f08a3517f",
+      "video": "task-tapes-physics-v4.mp4",
+      "sha256": "9877557ef044f7176beabd5c3167fc3bfdf597becf1470d93479329718948a19",
       "kind": "hand-coded physics illustration",
       "duration_s": 14.0,
       "physics_steps": 14000,
       "physics_dt_s": 0.001,
       "checked_scope": "Every physics step plus refreshed contacts at every saved 50 Hz state",
       "per_step_max_penetration_mm": {
-        "depth": 0.21666055016082025,
+        "depth": 0.1183496428293046,
         "self": 0.0,
         "hand_scene": 0.0
       },
       "saved_state_max_penetration_mm": {
-        "hand_object": 0.1784960097482001,
+        "hand_object": 0.1183483644193706,
         "self": 0.0,
         "hand_scene": 0.0,
-        "object_scene": 2.663740780613857
+        "object_scene": 0.2383098369463949
       },
       "max_joint_limit_excess_rad": 0,
       "object_pose_overwrites_after_initialization": 0,
       "object_external_wrench": 0.0,
-      "max_wrist_angular_speed_rad_s": 1.5791454288222078,
-      "last_second_wrist_angular_speed_p95_rad_s": 0.008387507412681213,
+      "max_wrist_angular_speed_rad_s": 0.20332527746507262,
+      "last_second_wrist_angular_speed_p95_rad_s": 0.008563192480697717,
       "hand": "left",
       "finger_assignment": [
         "thumb",
         "index",
-        "ring"
+        "middle"
       ],
+      "each_roll_contacts_only_its_assigned_finger": true,
+      "ring_and_little_clear_throughout": true,
+      "released_on_surface": true,
       "geometry": "Three independent annular rigid bodies; nominal dimensions",
-      "source_relation": "Finger roles and task sequence checked against the original recording and its explicit task binding; illustrative geometry and controller"
+      "source_relation": "Left thumb, index and middle follow the author-specified finger roles; illustrative geometry and controller"
     },
     {
       "task": "cap",
