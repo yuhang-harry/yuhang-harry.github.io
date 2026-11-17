@@ -235,6 +235,8 @@
   <p><strong>EgoDex</strong> <a class="citation" href="#ref-egodex" aria-label="Reference 7: EgoDex">[7]</a> supplies egocentric hand motion, and <strong>DexTouch-WM</strong> <a class="citation" href="#ref-dextouch-wm" aria-label="Reference 8: DexTouch-WM">[8]</a> learns action-conditioned visual–tactile prediction from human and robot interaction. <strong>TacThru</strong> <a class="citation" href="#ref-tacthru" aria-label="Reference 18: TacThru">[18]</a> combines simultaneous tactile and visual sensing with multimodal imitation. These sources and models motivate heterogeneous supervision: a recorded or predicted contact trajectory becomes a T target through its selection and use as an execution goal, with its provenance retained.</p>
   <p><strong>Taccel</strong> <a class="citation" href="#ref-taccel" aria-label="Reference 19: Taccel">[19]</a> provides GPU simulation of vision-based tactile sensors. <strong>Bench2Dex</strong> <a class="citation" href="#ref-bench2dex" aria-label="Reference 20: Bench2Dex">[20]</a> supplies a shared simulated tactile interface and structured bimanual evaluations. <strong>HandsOn</strong> <a class="citation" href="#ref-handson" aria-label="Reference 23: HandsOn">[23]</a> tests demonstration-based execution and transfer across assets, relations, skill compositions and deformable objects. These resources support evaluating the intended capability through contact establishment, coordinated motion and maintenance of the completed goal.</p>
 
+  <p><strong>sim-tactile-lerobot</strong> <a class="citation" href="#ref-sim-tactile-lerobot" aria-label="Reference 25: sim-tactile-lerobot">[25]</a> connects an Isaac Sim tactile readout to the LeFlexiTac data and policy workflow. Its spatial sensor readings are computed from signed distances to object surfaces, with sensor-compatible normalization. This suggests a useful observation adapter for S0: preserve contact location alongside loading in physical units, with calibration specific to the hand and sensor. Geometric readouts and solver-derived contact forces retain separate provenance. A tactile observation becomes the interface's future T only when it is selected and issued as an execution goal.</p>
+
   <h2 id="experiments">From motion goals to contact transitions</h2>
   <p>The gallery connects each task to an execution decision: retain support during a turn, change load within a grasp, carry several objects on separate fingers, or transfer support to a tray or vase before withdrawing. These sequences make the S/C/T interface concrete: motion, command and contact intention describe different parts of the same continuation.</p>
   <p>Eight videos are MuJoCo dynamics illustrations driven by hand-coded wrist and finger controllers. The objects move through simulated contact, friction and gravity; the cap follows a threaded joint. Force-controlled holding uses measured contact load to adjust the finger command. Pen spinning replays a complete archived policy run at 50 frames per second. These task sequences define the interactions for the S0 and S1 evaluations proposed below.</p>
@@ -301,11 +303,12 @@
     <li id="ref-demofungrasp">Chuan Mao et al. <a href="https://openaccess.thecvf.com/content/CVPR2026/papers/Mao_DemoFunGrasp_Universal_Dexterous_Functional_Grasping_via_Demonstration-Editing_Reinforcement_Learning_CVPR_2026_paper.pdf"><cite>DemoFunGrasp: Universal Dexterous Functional Grasping via Demonstration-Editing Reinforcement Learning.</cite></a> CVPR, 2026.</li>
     <li id="ref-handson">Tianwei Luo et al. <a href="https://arxiv.org/abs/2610.26765"><cite>HandsOn: A Large-Scale Simulation Benchmark for Generalizable Dexterous Manipulation.</cite></a> arXiv preprint, 2026.</li>
     <li id="ref-cgp">Zhengtong Xu et al. <a href="https://roboticsproceedings.org/rss22/p005.html"><cite>Contact-Grounded Policy: Dexterous Visuotactile Policy with Generative Contact Grounding.</cite></a> Robotics: Science and Systems, 2026.</li>
+    <li id="ref-sim-tactile-lerobot">heyifan740-code. <a href="https://github.com/heyifan740-code/sim-tactile-lerobot/tree/ab732ceb96085adf757e68a2ea7d3e8ca0b62774"><cite>sim-tactile-lerobot: LeFlexiTac tactile workflow in Isaac Sim.</cite></a> Software repository, accessed November 17, 2026.</li>
   </ol>
 
   <h2 id="cite">Cite this note</h2>
   <p>Hang Yu. <em>Towards a Unified Dexterous Manipulation Interface.</em> Research note, November 4, 2026. <a href="citation.bib" download="yu2026learningtoexecute.bib">Download BibTeX</a>.</p>
-  <p class="meta">Originally written November 4, 2026. Text and literature revised November 13, 2026.</p>
+  <p class="meta">Originally written November 4, 2026. Text and literature revised November 17, 2026.</p>
   <pre class="bibtex"><code>@misc{yu2026learningtoexecute,
   author       = {Yu, Hang},
   title        = {Towards a Unified Dexterous Manipulation Interface},
@@ -313,7 +316,7 @@
   month        = nov,
   howpublished = {\url{https://yuhang-harry.github.io/notes/s0-s1/}},
   url          = {https://yuhang-harry.github.io/notes/s0-s1/},
-  note         = {Research note. First written November 4, 2026; revised November 13, 2026}
+  note         = {Research note. First written November 4, 2026; revised November 17, 2026}
 }</code></pre>
   <footer><a href="../../">← Back to Hang Yu’s homepage</a></footer>
 </main>
